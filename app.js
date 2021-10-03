@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const middleware = require('./middleware');
 const loginRoute = require('./routes/loginRoutes');
+const registerRoutes = require('./routes/registerRoutes')
 
 const app = express();
 const PORT = 3003;
@@ -14,7 +15,7 @@ app.set("views", "views");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/login", loginRoute)
-
+app.use("/register", registerRoutes)
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
