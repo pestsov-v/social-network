@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session')
 const middleware = require('./middleware');
 const loginRoute = require('./routes/loginRoutes');
-const registerRoutes = require('./routes/registerRoutes');
+const registerRoute = require('./routes/registerRoutes');
+const logoutRoute = require('./routes/logoutRoutes')
 const mongoose = require('./database')
 const config = require('./config')
 
@@ -26,7 +27,8 @@ app.use(session({
 }));
 
 app.use("/login", loginRoute);
-app.use("/register", registerRoutes);
+app.use("/logout", logoutRoute);
+app.use("/register", registerRoute);
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
