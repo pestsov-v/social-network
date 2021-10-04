@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const e = require('express');
+
 const app = express();
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.post("/", (req, res, next) => {
     
 
     if (firstName && lastName && username && email && password) {
-        
+    
     } else {
         payload.errorMessage = "Заполните все поля";
         res.status(200).render("register.pug", payload);
