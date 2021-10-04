@@ -31,7 +31,8 @@ app.use("/register", registerRoutes);
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
     const payload = {
-        pageTitle: "Home"
+        pageTitle: "Home",
+        userLoggedIn: req.session.user
     }
 
     res.status(200).render("home.pug", payload);
