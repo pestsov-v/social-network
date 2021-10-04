@@ -1,8 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-
-const app = express();
+const express = require('express')
+const app = express()
 const router = express.Router();
+const bodyParser = require('body-parser');
+const User = require('../schemas/UserSchema')
+
 
 app.set("view engine", "pug");
 app.set("views", "views");
@@ -14,7 +15,7 @@ router.get("/", (req, res, next) => {
     res.status(200).render("register.pug");
 })
 
-router.post("/", (req, res, next) => {
+router.post("/", async (req, res, next) => {
     
     const firstName = req.body.firstName.trim();
     const lastName = req.body.lastName.trim();
@@ -26,10 +27,36 @@ router.post("/", (req, res, next) => {
     
 
     if (firstName && lastName && username && email && password) {
-    
+        const user = await User.findOne({ 
+            $or: [
+                {username: username},
+                {email: email}
+            ]
+        }).catch((err) => {
+            console.log(err);
+            payload.errorMessage = "Что-то пошло не так...";
+            res.status(200).render("register.pug", payload);
+        });
+
+        if (user == null) {
+            let data = req.body;
+            
+            User.create(data).then((user) => {
+                console.log(user);
+            })
+
+        } else {
+            if (email == user.email) {
+                payload.errorMessage = "Такая почта уже используется";
+            } else {
+                payload.errorMessage = "Такой username уже используется";
+            }
+            res.status(200).render("register.pug", payload);
+        }
+        
     } else {
-        payload.errorMessage = "Заполните все поля";
-        res.status(200).render("register.pug", payload);
+            payload.errorMessage = "Заполните все поля";
+            res.status(200).render("register.pug", payload);
     }
 
     
