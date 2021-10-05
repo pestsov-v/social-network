@@ -25,7 +25,8 @@ router.post("/", async (req, res, next) => {
                 {username: req.body.logUsername},
                 {email: req.body.logUsername}
             ]
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err);
             payload.errorMessage = "Что-то пошло не так...";
             res.status(200).render("login.pug", payload);

@@ -3,6 +3,14 @@
     --buttonHoverBg: #d4edff;
     --lightGrey: rgb(230, 236, 240);
     --spacing: 15px;
+    --blueLight: #9bd1f9;
+    --greyText: rgb(101, 119, 134);
+    --greyButtonText: rgba(0, 0, 0, 0.34);
+}
+
+* {
+    outline: none !important;
+
 }
 
 a {
@@ -45,7 +53,12 @@ nav a:hover {
     background-color: var(--buttonHoverBg);
     color: var(--blue);
     border-radius: 50%;
+}
 
+button {
+    background-color: transparent;
+    border: none;
+    color: var(--greyButtonText);
 }
 
 
@@ -64,9 +77,110 @@ nav a:hover {
     align-items: center;
     border-bottom: 1px solid var(--lightGrey);
     flex-shrink: 0;
-
 }
 
 .titleContainer h1 {
     flex: 1;
+}
+
+.postFormContainer {
+    display: flex;
+    padding: var(--spacing);
+    border-bottom: 10px solid rgb(230, 236, 240);
+    flex-shrink: 0;
+}
+
+.userImageContainer {
+    width: 50px;
+    height: 50px;
+}
+
+.userImageContainer img {
+    width: 100%;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.textareaContainer {
+    flex: 1;
+    padding-left: var(--spacing);
+}
+
+.textareaContainer textarea{
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 19px;
+}
+
+#submitPostButton {
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 7px 15px;
+}
+
+#submitPostButton:disabled {
+    background-color: var(--blueLight);
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    cursor: pointer;
+    border-bottom: 1px solid var(--lightGrey);
+    flex-shrink: 0;
+}
+
+.mainContentContainer {
+    flex: 1;
+    display: flex;
+}
+
+.postContentContainer {
+    padding-left: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.username,
+.date {
+    color: var(--greyText);
+}
+
+.displayName {
+    font-weight: bold;
+}
+
+
+.postFooter {
+    display: flex;
+    align-items: center;
+}
+
+.postFooter .postButtonContainer {
+    flex: 1;
+    display: flex;
+}
+
+.postFooter .postButtonContainer button {
+    padding: 2px 5px;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
+
+.header a,
+.header span {
+    padding-right: 5px;
+}
+
+.postButtonContainer button:hover {
+    background-color: #d4edff;
+    color: var(--blue);
+    border-radius: 50%;
 }

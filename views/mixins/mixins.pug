@@ -1,0 +1,8 @@
+mixin createPostForm(userLoggedIn)
+    .postFormContainer 
+        .userImageContainer
+            img(src=userLoggedIn.profilePic, alt="Фото пользователя")
+        .textareaContainer 
+            textarea#postTextarea(placeholder="Что нового?")
+            .buttonsContainer
+                button#submitPostButton(disabled="") Отправить 
