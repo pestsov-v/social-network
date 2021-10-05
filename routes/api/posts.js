@@ -1,9 +1,10 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
 const User = require('../../schemas/UserSchema')
+const Post = require('../../schemas/PostSchema')
 const app = express();
 const router = express.Router();
-const bodyParser = require('body-parser');
+
 
 
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -15,10 +16,22 @@ router.post("/", async (req, res, next) => {
 
     if (!req.body.content) {
         console.log("Нету никакого содержимого в req.body.content")
-        return res.status(400);
+        return res.sendStatus(400);
     }
 
-    res.status(200).send("Сработало!")
+    let postData = {
+        content: req.body.content,
+        postedBy: req.session.user
+    }
+
+    await Post.create(postData)
+    .then(newPost => {
+        res.status(201).send(newPost)
+    })
+    .catch(err => {
+        console.log(err)
+        res.sendStatus(400)
+    })
 })
 
 module.exports = router;
