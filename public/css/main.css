@@ -6,7 +6,6 @@
     --blueLight: #9bd1f9;
     --greyText: rgb(101, 119, 134);
     --greyButtonText: rgba(0, 0, 0, 0.34);
-
 }
 
 * {
@@ -54,7 +53,6 @@ nav a:hover {
     background-color: var(--buttonHoverBg);
     color: var(--blue);
     border-radius: 50%;
-
 }
 
 button {
@@ -79,7 +77,6 @@ button {
     align-items: center;
     border-bottom: 1px solid var(--lightGrey);
     flex-shrink: 0;
-
 }
 
 .titleContainer h1 {
@@ -96,7 +93,6 @@ button {
 .userImageContainer {
     width: 50px;
     height: 50px;
-
 }
 
 .userImageContainer img {
@@ -108,7 +104,6 @@ button {
 .textareaContainer {
     flex: 1;
     padding-left: var(--spacing);
-
 }
 
 .textareaContainer textarea{
@@ -172,6 +167,20 @@ button {
 }
 
 .postFooter .postButtonContainer button {
-    padding: 0 5px;
+    padding: 2px 5px;
+}
 
+.header a:hover {
+    text-decoration: underline;
+}
+
+.header a,
+.header span {
+    padding-right: 5px;
+}
+
+.postButtonContainer button:hover {
+    background-color: #d4edff;
+    color: var(--blue);
+    border-radius: 50%;
 }
