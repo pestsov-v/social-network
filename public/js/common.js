@@ -16,7 +16,7 @@ $("#postTextarea").keyup(event => {
     submitButton.prop("disabled", false);
 })
 
-$("#sumbitPostButton").click(event => {
+$("#submitPostButton").click(() => {
     const button = $(event.target);
     const textbox = $("#postTextarea");
 
@@ -24,7 +24,7 @@ $("#sumbitPostButton").click(event => {
         content: textbox.val()
     }
 
-    $.post("/api/post", data, (postData, status, xhr) => {
-
+    $.post("/api/posts", data, (postData, status, xhr) => {
+        alert(postData)
     })
 })
