@@ -26,7 +26,7 @@ $("#submitPostButton").click(() => {
 
     $.post("/api/posts", data, postData => {
         
-        let html = createPostHTML(postData);
+        let html = createPostHtml(postData);
         $(".postsContainer").prepend(html);
         textbox.val("");
         button.prop("disabled", true);
@@ -34,9 +34,10 @@ $("#submitPostButton").click(() => {
     })
 })
 
-function createPostHTML(postData) {
+function createPostHtml(postData) {
     
     const postedBy = postData.postedBy;
+
     const displayName = postedBy.firstName + " " + postedBy.lastName;
     const timestamps = postData.createdAt;
 
@@ -73,5 +74,5 @@ function createPostHTML(postData) {
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>`
 }

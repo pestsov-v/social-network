@@ -7,9 +7,13 @@ const router = express.Router();
 
 
 
-app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", (req, res, next) => {
+    Post.find()
+    .populate("postedBy")
+    .then(results => res.status(200).send(results))  
+    .catch(err => console.log(err))
 })
 
 router.post("/", async (req, res, next) => {
@@ -24,7 +28,7 @@ router.post("/", async (req, res, next) => {
         postedBy: req.session.user
     }
 
-    await Post.create(postData)
+    Post.create(postData)
     .then(async newPost => {
         newPost = await User.populate(newPost, {path: "postedBy"})
 
