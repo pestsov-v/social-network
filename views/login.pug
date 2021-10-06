@@ -7,7 +7,11 @@ block content
 
             p.errorMessage #{errorMessage}
 
-            input(type="text", name="logUsername", placeholder="Введите имя или почту", value=logUsername, required="")
-            input(type="password", name="logPassword", placeholder="Введите пароль", required="")
+            //- input(type="text", name="logUsername", placeholder="Введите имя или почту", value=logUsername, required="")
+            //- input(type="password", name="logPassword", placeholder="Введите пароль", required="")
+
+            input(type="text", name="logUsername", placeholder="Введите имя или почту", value="Ave", required="")
+            input(type="password", name="logPassword", placeholder="Введите пароль", value="123" required="")
+
             input(type="submit", value="Войти")
         a(href="/register") Зарегистрироваться
