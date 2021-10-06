@@ -26,7 +26,7 @@ $("#submitPostButton").click(() => {
 
     $.post("/api/posts", data, postData => {
         
-        let html = createPostHTML(postData);
+        let html = createPostHtml(postData);
         $(".postsContainer").prepend(html);
         textbox.val("");
         button.prop("disabled", true);
@@ -34,11 +34,12 @@ $("#submitPostButton").click(() => {
     })
 })
 
-function createPostHTML(postData) {
+function createPostHtml(postData) {
     
     const postedBy = postData.postedBy;
+
     const displayName = postedBy.firstName + " " + postedBy.lastName;
-    const timestamps = postData.createdAt;
+    const timestamps = timeDifference(new Date(), new Date(postData.createdAt));
 
     return `<div class='post'>
                 <div class='mainContentContainer'>
@@ -73,5 +74,42 @@ function createPostHTML(postData) {
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>`
+}
+
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - previous;
+
+    if (elapsed < msPerMinute) {
+        if (elapsed/1000 < 30) return "Только что"
+
+        return Math.round(elapsed/1000) + ' seconds ago';   
+    }
+
+    else if (elapsed < msPerHour) {
+         return Math.round(elapsed/msPerMinute) + ' минут назад';   
+    }
+
+    else if (elapsed < msPerDay ) {
+         return Math.round(elapsed/msPerHour ) + ' часов назад';   
+    }
+
+    else if (elapsed < msPerMonth) {
+        return Math.round(elapsed/msPerDay) + ' дней назад';   
+    }
+
+    else if (elapsed < msPerYear) {
+        return Math.round(elapsed/msPerMonth) + ' месяцев назад';   
+    }
+
+    else {
+        return Math.round(elapsed/msPerYear ) + ' лет назад';   
+    }
 }
