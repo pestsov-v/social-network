@@ -31,7 +31,11 @@ const UserSchema = new Schema({
     profilePic: {
         type: String,
         default: "/images/profilePic.jpg"
-    }
+    },
+    likes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }]
 }, {timestamps: true})
 
 const User = model('User', UserSchema);

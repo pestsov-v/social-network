@@ -34,6 +34,31 @@ $("#submitPostButton").click(() => {
     })
 })
 
+$(document).on("click", ".likeButton", (event) => {
+    const button = $(event.target);
+    const postId = getPostIdFromElement(button);
+    
+    if (postId === undefined) return;
+
+    $.ajax({
+        url: `/api/posts/${postId}/like`,
+        type: "PUT",
+        success: (postData) => {
+            console.log(postData)
+        }
+    })
+})
+
+function getPostIdFromElement(element) {
+    const isRoot = element.hasClass("post");
+    const rootElement = isRoot == true ? element : element.closest(".post");
+    const postId = rootElement.data().id;
+
+    if (postId === undefined) return alert("ID поста неопределён");
+
+    return postId;
+}
+
 function createPostHtml(postData) {
     
     const postedBy = postData.postedBy;
@@ -41,7 +66,7 @@ function createPostHtml(postData) {
     const displayName = postedBy.firstName + " " + postedBy.lastName;
     const timestamps = timeDifference(new Date(), new Date(postData.createdAt));
 
-    return `<div class='post'>
+    return `<div class='post' data-id='${postData._id}'>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
                         <img src='${postedBy.profilePic}'>
@@ -67,7 +92,7 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button class='likeButton'>
                                     <i class='far fa-heart'></i>
                                 </button>
                             </div>
@@ -102,7 +127,7 @@ function timeDifference(current, previous) {
     }
 
     else if (elapsed < msPerMonth) {
-        return Math.round(elapsed/msPerDay) + ' дней назад';   
+        return Math.round(elapsed/msPerDay) + ' дней назад';
     }
 
     else if (elapsed < msPerYear) {
