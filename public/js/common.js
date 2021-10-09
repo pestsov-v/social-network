@@ -44,7 +44,13 @@ $(document).on("click", ".likeButton", (event) => {
         url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) => {
-            console.log(postData.likes.length)
+            button.find("span").text(postData.likes.length || "");
+
+            if (postData.likes.includes(userLoggedIn._id)) {
+                button.addClass("active");
+            } else {
+                button.removeClass("active");
+            }
         }
     })
 })
@@ -87,13 +93,14 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button class='retweet' >
                                     <i class='fas fa-retweet'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
+                            <div class='postButtonContainer red'>
                                 <button class='likeButton'>
                                     <i class='far fa-heart'></i>
+                                    <span>${postData.likes.length || ""}</span>
                                 </button>
                             </div>
                         </div>
