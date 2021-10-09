@@ -44,7 +44,7 @@ $(document).on("click", ".likeButton", (event) => {
         url: `/api/posts/${postId}/like`,
         type: "PUT",
         success: (postData) => {
-            console.log(postData)
+            console.log(postData.likes.length)
         }
     })
 })
