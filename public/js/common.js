@@ -99,8 +99,8 @@ function createPostHtml(postData) {
                                     <i class='fas fa-retweet'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer ${likeButtonActiveClass}'>
-                                <button class='likeButton'>
+                            <div class='postButtonContainer red'>
+                                <button class='likeButton ${likeButtonActiveClass}'>
                                     <i class='far fa-heart'></i>
                                     <span>${postData.likes.length || ""}</span>
                                 </button>
