@@ -7,6 +7,7 @@
     --greyText: rgb(101, 119, 134);
     --greyButtonText: rgba(0, 0, 0, 0.34);
     --red: rgb(226, 34, 94);
+    --green: rgb(23, 191, 99)
 }
 
 * {
@@ -194,4 +195,8 @@ button span {
 
 .postButtonContainer.red button.active {
     color: var(--red)
-}   
+}  
+
+.postButtonContainer.green button.active {
+    color: var(--green)
+}  

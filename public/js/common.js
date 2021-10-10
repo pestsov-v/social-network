@@ -68,15 +68,13 @@ $(document).on("click", ".retweetButton", (event) => {
         type: "POST",
         success: (postData) => {
 
-            console.log(postData)
+            button.find("span").text(postData.retweetUsers.length || "");
 
-            // button.find("span").text(postData.likes.length || "");
-
-            // if (postData.likes.includes(userLoggedIn._id)) {
-            //     button.addClass("active");
-            // } else {
-            //     button.removeClass("active");
-            // }
+            if (postData.retweetUsers.includes(userLoggedIn._id)) {
+                button.addClass("active");
+            } else {
+                button.removeClass("active");
+            }
         }
     })
 })
@@ -120,9 +118,10 @@ function createPostHtml(postData) {
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
+                            <div class='postButtonContainer green'>
                                 <button class='retweetButton' >
                                     <i class='fas fa-retweet'></i>
+                                    <span>${postData.retweetUsers.length || ""}</span>
                                 </button>
                             </div>
                             <div class='postButtonContainer red'>
@@ -139,13 +138,13 @@ function createPostHtml(postData) {
 
 function timeDifference(current, previous) {
 
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
+    const msPerMinute = 60 * 1000;
+    const msPerHour = msPerMinute * 60;
+    const msPerDay = msPerHour * 24;
+    const msPerMonth = msPerDay * 30;
+    const msPerYear = msPerDay * 365;
 
-    var elapsed = current - previous;
+    const elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
         if (elapsed/1000 < 30) return "Только что"
