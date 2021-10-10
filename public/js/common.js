@@ -1,3 +1,4 @@
+
 $("#postTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
@@ -55,6 +56,29 @@ $(document).on("click", ".likeButton", (event) => {
     })
 })
 
+
+$(document).on("click", ".retweetButton", (event) => {
+    const button = $(event.target);
+    const postId = getPostIdFromElement(button);
+    
+    if (postId === undefined) return;
+
+    $.ajax({
+        url: `/api/posts/${postId}/retweet`,
+        type: "POST",
+        success: (postData) => {
+
+            button.find("span").text(postData.retweetUsers.length || "");
+
+            if (postData.retweetUsers.includes(userLoggedIn._id)) {
+                button.addClass("active");
+            } else {
+                button.removeClass("active");
+            }
+        }
+    })
+})
+
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
     const rootElement = isRoot == true ? element : element.closest(".post");
@@ -66,15 +90,35 @@ function getPostIdFromElement(element) {
 }
 
 function createPostHtml(postData) {
+
+    if (postData == null) return("Пост не существует");
+
+    const isRetweet = postData.retweetData !== undefined;
+    const retweetedBy = isRetweet ? postData.postedBy.username : null;
+
+    postData = isRetweet ? postData.retweetData : postData;
     
     const postedBy = postData.postedBy;
 
     const displayName = postedBy.firstName + " " + postedBy.lastName;
     const timestamps = timeDifference(new Date(), new Date(postData.createdAt));
 
-    const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : ""
+    const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
+    const retweetButtonActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : "";
+
+    let retweetText = '';
+    
+    if (isRetweet) {
+        retweetText = `<span>
+                        <i class='fas fa-retweet'></i>
+                        Ретвитнул(а) <a href='profile/${retweetedBy}'>@${retweetedBy}</a>
+                        </span>`
+    }
 
     return `<div class='post' data-id='${postData._id}'>
+                <div class='postActionContainer'>
+                    ${retweetText}
+                </div>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
                         <img src='${postedBy.profilePic}'>
@@ -94,9 +138,10 @@ function createPostHtml(postData) {
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
-                                <button class='retweet' >
+                            <div class='postButtonContainer green'>
+                                <button class='retweetButton ${retweetButtonActiveClass}' >
                                     <i class='fas fa-retweet'></i>
+                                    <span>${postData.retweetUsers.length || ""}</span>
                                 </button>
                             </div>
                             <div class='postButtonContainer red'>
@@ -113,13 +158,13 @@ function createPostHtml(postData) {
 
 function timeDifference(current, previous) {
 
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
+    const msPerMinute = 60 * 1000;
+    const msPerHour = msPerMinute * 60;
+    const msPerDay = msPerHour * 24;
+    const msPerMonth = msPerDay * 30;
+    const msPerYear = msPerDay * 365;
 
-    var elapsed = current - previous;
+    const elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
         if (elapsed/1000 < 30) return "Только что"
