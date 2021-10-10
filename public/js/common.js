@@ -90,6 +90,13 @@ function getPostIdFromElement(element) {
 }
 
 function createPostHtml(postData) {
+
+    if (postData == null) return("Пост не существует");
+
+    const isRetweet = postData.retweetData !== undefined;
+    const retweetedBy = isRetweet ? postData.postedBy.username : null;
+
+    postData = isRetweet ? postData.retweetData : postData;
     
     const postedBy = postData.postedBy;
 
@@ -97,6 +104,7 @@ function createPostHtml(postData) {
     const timestamps = timeDifference(new Date(), new Date(postData.createdAt));
 
     const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : ""
+    const retweetButtonActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : ""
 
     return `<div class='post' data-id='${postData._id}'>
                 <div class='mainContentContainer'>
@@ -119,7 +127,7 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer green'>
-                                <button class='retweetButton' >
+                                <button class='retweetButton ${retweetButtonActiveClass}' >
                                     <i class='fas fa-retweet'></i>
                                     <span>${postData.retweetUsers.length || ""}</span>
                                 </button>
