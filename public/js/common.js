@@ -21,26 +21,30 @@ $("#postTextarea, #replyTextarea").keyup(event => {
 
 $("#submitPostButton, #submitReplyButton").click(() => {
     const button = $(event.target);
+
     const isModal = button.parents(".modal").length == 1;
-    const textbox = isModal ? $("#postTextarea") : $("#replyTextarea");
-    
+    const textbox = isModal ? $("#replyTextarea") : $("#postTextarea");
+
     const data = {
         content: textbox.val()
     }
 
-    if(isModal) {
-        let id = button.data().id;
-        if (id == null) return alert("Пустой ID");
+    if (isModal) {
+        const id = button.data().id;
+        if(id == null) return alert("Пустой ID");
         data.replyTo = id;
     }
 
     $.post("/api/posts", data, postData => {
         
-        let html = createPostHtml(postData);
-        $(".postsContainer").prepend(html);
-        textbox.val("");
-        button.prop("disabled", true);
-
+        if (postData.replyTo) {
+            location.reload();
+        } else {
+            const html = createPostHtml(postData);
+            $(".postsContainer").prepend(html);
+            textbox.val("");
+            button.prop("disabled", true);
+        }
     })
 })
 
@@ -136,6 +140,24 @@ function createPostHtml(postData) {
                         </span>`
     }
 
+    let replyFlag = "";
+    
+    if (postData.replyTo) {
+
+        if (!postData.replyTo._id) {
+            return alert("Отсутствует реплай")
+        } else if (!postData.replyTo.postedBy._id) {
+            return alert("Отсутствует реплай")
+        }
+
+        const replyToUsername = postData.replyTo.postedBy.username
+
+        replyFlag = `<div class='replyFlag'>
+                        Ответ от <a href='/profile/${replyToUsername}'>@${replyToUsername}</a>
+                    </div>`
+        
+    }
+
     return `<div class='post' data-id='${postData._id}'>
                 <div class='postActionContainer'>
                     ${retweetText}
@@ -150,6 +172,7 @@ function createPostHtml(postData) {
                             <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamps}</span>
                         </div>
+                        ${replyFlag}
                         <div class='postBody'>
                             <span>${postData.content}</span>
                         </div>
