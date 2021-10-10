@@ -6,3 +6,18 @@ mixin createPostForm(userLoggedIn)
             textarea#postTextarea(placeholder="Что нового?")
             .buttonsContainer
                 button#submitPostButton(disabled="") Отправить 
+
+
+mixin createReplyModal(userLoggedIn)
+    #replyModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='replyModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#replyModalLabel.modal-title Комментарии
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    | ...
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Закрыть
+                    button#submitReplyButton.btn.btn-primary(type='button', disables="") Прокомментировать
