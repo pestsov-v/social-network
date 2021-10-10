@@ -8,12 +8,18 @@ const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", async (req, res, next) => {
-    const results = await getPosts();
+    const results = await getPosts({});
     res.status(200).send(results)
 })
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
 
+    const postId = req.params.id;
+
+    let results = await getPosts({_id: postId});
+    results = results[0];
+    console.log(results);
+    res.status(200).send(results);
 })
 
 router.post("/", async (req, res, next) => {
@@ -106,8 +112,8 @@ router.post("/:id/retweet", async (req, res, next) => {
 })
 
 
-async function getPosts() {
-    const results = await Post.find()
+async function getPosts(filter) {
+    const results = await Post.find(filter)
     .populate("postedBy")
     .populate("retweetData")
     .sort({"createdAt": -1})
