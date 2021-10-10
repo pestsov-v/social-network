@@ -1,9 +1,11 @@
 
-$("#postTextarea").keyup(event => {
+$("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
+
+    const isModal = textbox.parents(".modal").length == 1;
     
-    const submitButton = $("#submitPostButton");
+    const submitButton = isModal ? $("#submitReplyButton") : $("#submitPostButton");
 
     if (submitButton.length == 0) {
         return alert ("no submit button found");
@@ -17,23 +19,46 @@ $("#postTextarea").keyup(event => {
     submitButton.prop("disabled", false);
 })
 
-$("#submitPostButton").click(() => {
+$("#submitPostButton, #submitReplyButton").click(() => {
     const button = $(event.target);
-    const textbox = $("#postTextarea");
+
+    const isModal = button.parents(".modal").length == 1;
+    const textbox = isModal ? $("#replyTextarea") : $("#postTextarea");
 
     const data = {
         content: textbox.val()
     }
 
+    if (isModal) {
+        const id = button.data().id;
+        if(id == null) return alert("Пустой ID");
+        data.replyTo = id;
+    }
+
     $.post("/api/posts", data, postData => {
         
-        let html = createPostHtml(postData);
-        $(".postsContainer").prepend(html);
-        textbox.val("");
-        button.prop("disabled", true);
-
+        if (postData.replyTo) {
+            location.reload();
+        } else {
+            const html = createPostHtml(postData);
+            $(".postsContainer").prepend(html);
+            textbox.val("");
+            button.prop("disabled", true);
+        }
     })
 })
+
+$("#replyModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget);
+    const postId = getPostIdFromElement(button);
+    $("#submitReplyButton").data("id", postId);
+
+    $.get("/api/posts/" + postId, results => {
+        outputPosts(results, $("#originalPostContainer"));       
+    })
+})
+
+$("#replyModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
 
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target);
@@ -115,6 +140,24 @@ function createPostHtml(postData) {
                         </span>`
     }
 
+    let replyFlag = "";
+    
+    if (postData.replyTo) {
+
+        if (!postData.replyTo._id) {
+            return alert("Отсутствует реплай")
+        } else if (!postData.replyTo.postedBy._id) {
+            return alert("Отсутствует реплай")
+        }
+
+        const replyToUsername = postData.replyTo.postedBy.username
+
+        replyFlag = `<div class='replyFlag'>
+                        Ответ от <a href='/profile/${replyToUsername}'>@${replyToUsername}</a>
+                    </div>`
+        
+    }
+
     return `<div class='post' data-id='${postData._id}'>
                 <div class='postActionContainer'>
                     ${retweetText}
@@ -129,12 +172,13 @@ function createPostHtml(postData) {
                             <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamps}</span>
                         </div>
+                        ${replyFlag}
                         <div class='postBody'>
                             <span>${postData.content}</span>
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button data-toggle='modal' data-target='#replyModal'>
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
@@ -177,7 +221,7 @@ function timeDifference(current, previous) {
     }
 
     else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' часов назад';   
+         return Math.round(elapsed/msPerHour ) + ' часа(ов) назад';   
     }
 
     else if (elapsed < msPerMonth) {
@@ -190,5 +234,23 @@ function timeDifference(current, previous) {
 
     else {
         return Math.round(elapsed/msPerYear ) + ' лет назад';   
+    }
+}
+
+
+function outputPosts(results, container) {
+    container.html("");
+
+    if (!Array.isArray(results)) {
+        results = [results]
+    }
+
+    results.forEach(result => {
+        const html = createPostHtml(result)
+        container.append(html)
+    });
+
+    if (results.length == 0) {
+        container.append("<span class='NoResults'>Вы ещё не создали ниодин пост</span>")
     }
 }

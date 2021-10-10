@@ -21,6 +21,10 @@ const PostSchema = new Schema({
     retweetData: {
         type: Schema.Types.ObjectId,
         ref: 'Post'
+    },
+    replyTo: {
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
     }
 
 }, {timestamps: true})
