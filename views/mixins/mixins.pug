@@ -17,7 +17,11 @@ mixin createReplyModal(userLoggedIn)
                     button.close(type='button' data-dismiss='modal' aria-label='Close')
                     span(aria-hidden='true') &times;
                 .modal-body
-                    | ...
+                    .postFormContainer 
+                        .userImageContainer
+                            img(src=userLoggedIn.profilePic, alt="Фото пользователя")
+                        .textareaContainer 
+                            textarea#postTextarea(placeholder="Что нового?")
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Закрыть
                     button#submitReplyButton.btn.btn-primary(type='button', disables="") Прокомментировать
