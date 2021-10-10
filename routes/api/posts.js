@@ -5,21 +5,15 @@ const Post = require('../../schemas/PostSchema')
 const app = express();
 const router = express.Router();
 
-
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
-router.get("/", (req, res, next) => {
-    Post.find()
-    .populate("postedBy")
-    .populate("retweetData")
-    .sort({"createdAt": -1})
-    .then(async results => {
-        results = await User.populate(results, {path: "retweetData.postedBy"}) 
-        res.status(200).send(results)}
-        
-        )  
-    .catch(err => console.log(err))
+router.get("/", async (req, res, next) => {
+    const results = await getPosts();
+    res.status(200).send(results)
+})
+
+router.get("/:id", (req, res, next) => {
+
 })
 
 router.post("/", async (req, res, next) => {
@@ -110,6 +104,17 @@ router.post("/:id/retweet", async (req, res, next) => {
     res.status(200).send(post)
 
 })
+
+
+async function getPosts() {
+    const results = await Post.find()
+    .populate("postedBy")
+    .populate("retweetData")
+    .sort({"createdAt": -1})
+    .catch(err => console.log(err))
+
+    return await User.populate(results, {path: "retweetData.postedBy"}) 
+}
 
 
 module.exports = router;

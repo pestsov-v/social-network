@@ -21,7 +21,7 @@ mixin createReplyModal(userLoggedIn)
                         .userImageContainer
                             img(src=userLoggedIn.profilePic, alt="Фото пользователя")
                         .textareaContainer 
-                            textarea#replyTextarea(placeholder="Что нового?")
+                            textarea#replyTextarea(placeholder="Ваш комментарий")
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Закрыть
                     button#submitReplyButton.btn.btn-primary(type='button', disables="") Прокомментировать
