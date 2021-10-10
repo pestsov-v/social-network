@@ -1,9 +1,11 @@
 
-$("#postTextarea").keyup(event => {
+$("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
+
+    const isModal = textbox.parents(".modal").length == 1;
     
-    const submitButton = $("#submitPostButton");
+    const submitButton = isModal ? $("#submitReplyButton") : $("#submitPostButton");
 
     if (submitButton.length == 0) {
         return alert ("no submit button found");
