@@ -43,13 +43,12 @@ $("#replyModal").on("show.bs.modal", (event) => {
 
     $(document).ready(() => {
         $.get("/api/posts/" + postId, results => {
-            console.log(results)       
+            outputPosts(results, $("#originalPostContainer"));       
         })
     })
-
-
 })
 
+$("#replyModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
 
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target);
@@ -193,7 +192,7 @@ function timeDifference(current, previous) {
     }
 
     else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' часов назад';   
+         return Math.round(elapsed/msPerHour ) + ' часа(ов) назад';   
     }
 
     else if (elapsed < msPerMonth) {
@@ -206,5 +205,23 @@ function timeDifference(current, previous) {
 
     else {
         return Math.round(elapsed/msPerYear ) + ' лет назад';   
+    }
+}
+
+
+function outputPosts(results, container) {
+    container.html("");
+
+    if (!Array.isArray(results)) {
+        results = [results]
+    }
+
+    results.forEach(result => {
+        const html = createPostHtml(result)
+        container.append(html)
+    });
+
+    if (results.length == 0) {
+        container.append("<span class='NoResults'>Вы ещё не создали ниодин пост</span>")
     }
 }
