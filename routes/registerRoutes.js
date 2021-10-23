@@ -11,7 +11,6 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false}));
 
-
 router.get("/", (req, res, next) => {
     res.status(200).render("register.pug");
 })
@@ -26,7 +25,6 @@ router.post("/", async (req, res, next) => {
 
     const payload = req.body;
     
-
     if (firstName && lastName && username && email && password) {
         const user = await User.findOne({ 
             $or: [
@@ -49,7 +47,6 @@ router.post("/", async (req, res, next) => {
                 req.session.user = user;
                 return res.redirect("/");
             })
-
         } else {
             if (email == user.email) {
                 payload.errorMessage = "Такая почта уже используется";
@@ -57,15 +54,11 @@ router.post("/", async (req, res, next) => {
                 payload.errorMessage = "Такой username уже используется";
             }
             res.status(200).render("register.pug", payload);
-        }
-        
+        }   
     } else {
             payload.errorMessage = "Заполните все поля";
             res.status(200).render("register.pug", payload);
     }
-
-    
 })
-
 
 module.exports = router;
