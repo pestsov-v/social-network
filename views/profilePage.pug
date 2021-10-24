@@ -2,9 +2,13 @@ extends layouts/main-layout.pug
 
 block content 
     if !profileUser
-        span.errorMessage Такого пользователя не существует или он не был найден. Пожалуйста укажите верный username пользователя.
+        span.errorMessage Такого пользователя не существует или он не был найден. Пожалуйста укажите верный никнейм пользователя.
     else 
-        span #{profileUser.firstName}
+        .profileHeaderContainer     
+            .coverPhotoContainer 
+
+                .userImageContainer 
+                    img(src=profileUser.profilePic, alt="Фото пользователя")
         .postsContainer
 
         +createPostModals(userLoggedIn)
