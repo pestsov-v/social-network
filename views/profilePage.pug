@@ -1,0 +1,13 @@
+extends layouts/main-layout.pug
+
+block content 
+    if !profileUser
+        span.errorMessage Такого пользователя не существует или он не был найден. Пожалуйста укажите верный username пользователя.
+    else 
+        span #{profileUser.firstName}
+        .postsContainer
+
+        +createPostModals(userLoggedIn)
+
+block scripts 
+    script(src="/js/profile.js") 

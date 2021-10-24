@@ -253,3 +253,8 @@ button span {
 .postContentContainer .header .date {
     flex: 1;
 }
+
+
+.errorMessage {
+    padding: var(--spacing)
+}
