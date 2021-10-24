@@ -1,4 +1,3 @@
-
 $("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
@@ -135,6 +134,42 @@ $(document).on("click", ".post", (event) => {
         window.location.href = '/posts/' + postId;
     }
 })
+
+$(document).on("click", ".followButton", (event) => {
+    const button = $(event.target);
+    const userId = button.data().user
+    
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: "PUT",
+        success: (data, status, xhr) => {
+
+            if (xhr.status == 404) {
+                alert("Пользователь не был найден")
+                return;
+            }
+
+            let difference = 1;
+            if (data.following && data.following.includes(userId)) {
+                button.addClass("following");
+                button.text("Подписан");
+            } else {
+                button.removeClass("following");
+                button.text("Подписаться");
+                difference = -1;
+            }
+
+            const followersLabel = $("#followersValue");
+
+            if (followersLabel.length != 0) {
+                let followersText = followersLabel.text();
+                followersText = parseInt(followersText);
+                followersLabel.text(followersText + difference);
+            }
+        }
+    })
+})
+
 
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");

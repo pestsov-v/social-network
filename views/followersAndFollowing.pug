@@ -1,0 +1,18 @@
+extends layouts/main-layout.pug
+
+block content 
+    if !profileUser
+        span.errorMessage Такого пользователя не существует или он не был найден. Пожалуйста укажите верный никнейм пользователя.
+    else
+        script. 
+            const profileUserId = '!{profileUser._id}'
+            const selectedTab = '!{selectedTab}'
+
+        .tabsContainer  
+            +createTab("Подписки", `/profile/${profileUser.username}/following`, selectedTab == 'following')
+            +createTab("Подписчики", `/profile/${profileUser.username}/followers`, selectedTab == 'followers')
+
+        .resultsContainer 
+
+block scripts 
+    script(src="/js/followersAndFollowing.js")
