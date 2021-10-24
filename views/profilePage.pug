@@ -7,11 +7,17 @@ block content
         .profileHeaderContainer     
             .coverPhotoContainer 
 
-                .userImageContainer 
+                .userImageContainer
                     img(src=profileUser.profilePic, alt="Фото пользователя")
+            .profileButtonsContainer
+                if profileUser._id = userLoggedIn._id
+                    a.profileButton(href=`/messages/${profileUser._id}`)
+                        i.fas.fa-envelope
+                    +createFollowButton(profileUser, true)
+                    
         .postsContainer
 
         +createPostModals(userLoggedIn)
 
 block scripts 
-    script(src="/js/profile.js") 
+    script(src="/js/profile.js")
