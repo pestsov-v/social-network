@@ -24,18 +24,18 @@ function outputUsers(results, container) {
     container.html("");
 
     results.forEach(result => {
-        var html = createUserHtml(result, true);
+        const html = createUserHtml(result, true);
         container.append(html);
     });
 
     if(results.length == 0) {
-        container.append("<span class='noResults'>No results found</span>")
+        container.append("<span class='noResults'>Ещё нет ниодной записи</span>")
     }
 }
 
 function createUserHtml(userData, showFollowButton) {
 
-    var name = userData.firstName + " " + userData.lastName;
+    const name = userData.firstName + " " + userData.lastName;
 
     return `<div class='user'>
                 <div class='userImageContainer'>
