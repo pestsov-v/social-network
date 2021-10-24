@@ -149,12 +149,22 @@ $(document).on("click", ".followButton", (event) => {
                 return;
             }
 
+            let difference = 1;
             if (data.following && data.following.includes(userId)) {
                 button.addClass("following");
-                button.text("Подписан")
+                button.text("Подписан");
             } else {
                 button.removeClass("following");
-                button.text("Подписаться")
+                button.text("Подписаться");
+                difference = -1;
+            }
+
+            const followersLabel = $("#followersValue");
+
+            if (followersLabel.length != 0) {
+                let followersText = followersLabel.text();
+                followersText = parseInt(followersText);
+                followersLabel.text(followersText + difference);
             }
         }
     })
