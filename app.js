@@ -33,7 +33,7 @@ app.use("/login", loginRoute);
 app.use("/logout", logoutRoute);
 app.use("/register", registerRoute);
 app.use("/api/posts", postsApiRoute);
-app.use("/posts", postRoute);
+app.use("/posts", middleware.requireLogin, postRoute);
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
