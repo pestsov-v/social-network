@@ -26,3 +26,22 @@ mixin createReplyModal(userLoggedIn)
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Закрыть
                     button#submitReplyButton.btn.btn-primary(type='button', disables="") Прокомментировать
+
+
+mixin createDeletePostModal()
+    #deletePostModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='deletePostModalLabel' aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#deletePostModalLabel.modal-title Удалить сообщение?
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p Вы не можете удалить это.
+                .modal-footer
+                    button.btn.btn-secondary(type='button' data-dismiss='modal') Закрыть
+                    button#deletePostButton.btn.btn-primary(type='button') Удалить
+
+mixin createPostModals(userLoggedIn)
+    +createReplyModal(userLoggedIn)
+    +createDeletePostModal()

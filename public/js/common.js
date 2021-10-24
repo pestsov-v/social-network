@@ -122,7 +122,7 @@ function getPostIdFromElement(element) {
     return postId;
 }
 
-function createPostHtml(postData) {
+function createPostHtml(postData, largeFont = false) {
 
     if (postData == null) return("Пост не существует");
 
@@ -138,6 +138,8 @@ function createPostHtml(postData) {
 
     const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
     const retweetButtonActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : "";
+
+    const largeFontClass = largeFont ? 'largeFont' : '';
 
     let retweetText = '';
     
@@ -166,7 +168,12 @@ function createPostHtml(postData) {
         
     }
 
-    return `<div class='post' data-id='${postData._id}'>
+    let buttons = "";
+    if (postData.postedBy._id == userLoggedIn._id) {
+        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class="fas fa-times"></i></button>`;
+    }
+
+    return `<div class='post ${largeFontClass}' data-id='${postData._id}'>
                 <div class='postActionContainer'>
                     ${retweetText}
                 </div>
@@ -179,6 +186,7 @@ function createPostHtml(postData) {
                             <a href='/profile/${postedBy.username}' class='displayName'>${displayName}</a>
                             <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamps}</span>
+                            ${buttons}
                         </div>
                         ${replyFlag}
                         <div class='postBody'>
@@ -271,7 +279,7 @@ function outputPostsWithReplies(results, container) {
         container.append(html)
     }
 
-    const mainPostHtml = createPostHtml(results.postData);
+    const mainPostHtml = createPostHtml(results.postData, true);
     container.append(mainPostHtml);
 
     results.replies.forEach(result => {

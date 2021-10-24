@@ -4,8 +4,8 @@ block content
     script. 
         const postId = '!{postId}'
     .postsContainer
+        +createPostModals(userLoggedIn)
 
-    +createReplyModal(userLoggedIn)
 
 block scripts 
     script(src="/js/postPage.js") 
