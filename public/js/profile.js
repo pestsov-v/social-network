@@ -1,9 +1,20 @@
 $(document).ready(() => {
-    loadPost()
+
+    if (selectedTab === "replies") {
+        loadReplies()
+    } else {
+        loadPosts()
+    }
 })
 
-function loadPost() {
-        $.get("/api/posts", { postedBy: profileUserId }, results => {
+function loadPosts() {
+        $.get("/api/posts", { postedBy: profileUserId, isReply: false }, results => {
             outputPosts(results, $(".postsContainer"))       
     })
+}
+
+function loadReplies() {
+    $.get("/api/posts", { postedBy: profileUserId, isReply: true }, results => {
+        outputPosts(results, $(".postsContainer"))       
+})
 }

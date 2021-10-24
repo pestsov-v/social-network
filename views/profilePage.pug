@@ -5,7 +5,8 @@ block content
         span.errorMessage Такого пользователя не существует или он не был найден. Пожалуйста укажите верный никнейм пользователя.
     else
         script. 
-            var profileUserId = '{profileUser._id}'
+            const profileUserId = '!{profileUser._id}'
+            const selectedTab = '!{selectedTab}'
 
         .profileHeaderContainer     
             .coverPhotoContainer 
@@ -31,8 +32,8 @@ block content
                         span Подписчиков
 
         .tabsContainer  
-            +createTab("Сообщения", `/profile/${profileUser.username}`, true)
-            +createTab("Ответы", `/profile/${profileUser.username}/replies`, false)
+            +createTab("Сообщения", `/profile/${profileUser.username}`, selectedTab != 'replies')
+            +createTab("Ответы", `/profile/${profileUser.username}/replies`, selectedTab == 'replies')
 
         .postsContainer
 
