@@ -60,6 +60,30 @@ $("#replyModal").on("show.bs.modal", (event) => {
 
 $("#replyModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
 
+$("#deletePostModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget);
+    const postId = getPostIdFromElement(button);
+    $("#deletePostButton").data("id", postId);  
+})
+
+$("#deletePostButton").click((event) => {
+    const postId = $(event.target).data("id");
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "DELETE",
+        success: (data, status, xhr) => {
+
+            if (xhr.status != 202) {
+                alert("Пост не был удалён")
+                return
+            }
+
+            location.reload();
+        }
+    })
+})
+
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target);
     const postId = getPostIdFromElement(button);
