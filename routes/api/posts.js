@@ -17,6 +17,7 @@ router.get("/:id", async (req, res, next) => {
     const postId = req.params.id;
 
     let postData = await getPosts({_id: postId});
+
     postData = postData[0];
 
     const results = {
@@ -124,11 +125,11 @@ router.post("/:id/retweet", async (req, res, next) => {
 
 })
 
-router.delete("/:id", async (req, res, next) => {
-    await Post.findByIdAndDelete(req.params.id)
-    .then(() => res.status(202))
-    .catch((err) => {
-        console.log(err);
+router.delete("/:id", (req, res, next) => {
+    Post.findByIdAndDelete(req.params.id)
+    .then(() => res.sendStatus(202))
+    .catch(error => {
+        console.log(error);
         res.sendStatus(400);
     })
 })

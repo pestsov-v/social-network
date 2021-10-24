@@ -74,11 +74,11 @@ $("#deletePostButton").click((event) => {
         type: "DELETE",
         success: (data, status, xhr) => {
 
-            if (xhr.status != 202) {
-                alert("Пост не был удалён")
-                return
+            if(xhr.status != 202) {
+                alert("Не удалось удалить сообщение");
+                return;
             }
-
+            
             location.reload();
         }
     })
