@@ -142,15 +142,20 @@ $(document).on("click", ".followButton", (event) => {
     $.ajax({
         url: `/api/users/${userId}/follow`,
         type: "PUT",
-        success: (data) => {
-            console.log(data)
-            // button.find("span").text(postData.retweetUsers.length || "");
+        success: (data, status, xhr) => {
 
-            // if (postData.retweetUsers.includes(userLoggedIn._id)) {
-            //     button.addClass("active");
-            // } else {
-            //     button.removeClass("active");
-            // }
+            if (xhr.status == 404) {
+                alert("Пользователь не был найден")
+                return;
+            }
+
+            if (data.following && data.following.includes(userId)) {
+                button.addClass("following");
+                button.text("Подписан")
+            } else {
+                button.removeClass("following");
+                button.text("Подписаться")
+            }
         }
     })
 })
