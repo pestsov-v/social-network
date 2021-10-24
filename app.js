@@ -38,7 +38,7 @@ app.use("/posts", postRoute);
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
     const payload = {
-        pageTitle: "Home",
+        pageTitle: "Главная",
         userLoggedIn: req.session.user,
         userLoggedInJs: JSON.stringify(req.session.user)
     }
