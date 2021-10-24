@@ -1,4 +1,3 @@
-
 $("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
@@ -135,6 +134,27 @@ $(document).on("click", ".post", (event) => {
         window.location.href = '/posts/' + postId;
     }
 })
+
+$(document).on("click", ".followButton", (event) => {
+    const button = $(event.target);
+    const userId = button.data().user
+    
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: "PUT",
+        success: (data) => {
+            console.log(data)
+            // button.find("span").text(postData.retweetUsers.length || "");
+
+            // if (postData.retweetUsers.includes(userLoggedIn._id)) {
+            //     button.addClass("active");
+            // } else {
+            //     button.removeClass("active");
+            // }
+        }
+    })
+})
+
 
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
