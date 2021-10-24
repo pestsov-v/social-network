@@ -14,7 +14,21 @@ router.put("/:userId/follow", async (req, res, next) => {
 
     const isFollowing = user.followers && user.followers.includes(req.session.user._id);
 
-    res.status(200).send(isFollowing)
+    const option = isFollowing ? "$pull" : "$addToSet";
+
+    req.session.user = await User.findByIdAndUpdate(req.session.user._id, { [option]: { following: userId }}, {new: true})
+    .catch(err => {
+        console.log(err);
+        res.status(400);
+    })
+    
+    User.findByIdAndUpdate(userId, { [option]: { followers: req.session.user._id }})
+    .catch(err => {
+        console.log(err);
+        res.status(400);
+    }) 
+
+    res.status(200).send(req.session.user)
 })
 
 module.exports = router;
