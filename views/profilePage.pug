@@ -3,7 +3,10 @@ extends layouts/main-layout.pug
 block content 
     if !profileUser
         span.errorMessage Такого пользователя не существует или он не был найден. Пожалуйста укажите верный никнейм пользователя.
-    else 
+    else
+        script. 
+            var profileUserId = '{profileUser._id}'
+
         .profileHeaderContainer     
             .coverPhotoContainer 
 
@@ -26,7 +29,11 @@ block content
                     a(href=`/profile/${profileUser.username}/followers`)
                         span.value #{0}
                         span Подписчиков
-                    
+
+        .tabsContainer  
+            +createTab("Сообщения", `/profile/${profileUser.username}`, true)
+            +createTab("Ответы", `/profile/${profileUser.username}/replies`, false)
+
         .postsContainer
 
         +createPostModals(userLoggedIn)
