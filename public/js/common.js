@@ -54,11 +54,35 @@ $("#replyModal").on("show.bs.modal", (event) => {
     $("#submitReplyButton").data("id", postId);
 
     $.get("/api/posts/" + postId, results => {
-        outputPosts(results, $("#originalPostContainer"));       
+        outputPosts(results.postData, $("#originalPostContainer"));       
     })
 })
 
 $("#replyModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
+
+$("#deletePostModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget);
+    const postId = getPostIdFromElement(button);
+    $("#deletePostButton").data("id", postId);  
+})
+
+$("#deletePostButton").click((event) => {
+    const postId = $(event.target).data("id");
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "DELETE",
+        success: (data, status, xhr) => {
+
+            if(xhr.status != 202) {
+                alert("Не удалось удалить сообщение");
+                return;
+            }
+            
+            location.reload();
+        }
+    })
+})
 
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target);
@@ -80,7 +104,6 @@ $(document).on("click", ".likeButton", (event) => {
         }
     })
 })
-
 
 $(document).on("click", ".retweetButton", (event) => {
     const button = $(event.target);
@@ -104,6 +127,15 @@ $(document).on("click", ".retweetButton", (event) => {
     })
 })
 
+$(document).on("click", ".post", (event) => {
+    const element = $(event.target);
+    const postId = getPostIdFromElement(element);
+
+    if (postId !== undefined && !element.is("button")) {
+        window.location.href = '/posts/' + postId;
+    }
+})
+
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
     const rootElement = isRoot == true ? element : element.closest(".post");
@@ -114,7 +146,7 @@ function getPostIdFromElement(element) {
     return postId;
 }
 
-function createPostHtml(postData) {
+function createPostHtml(postData, largeFont = false) {
 
     if (postData == null) return("Пост не существует");
 
@@ -131,6 +163,8 @@ function createPostHtml(postData) {
     const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : "";
     const retweetButtonActiveClass = postData.retweetUsers.includes(userLoggedIn._id) ? "active" : "";
 
+    const largeFontClass = largeFont ? 'largeFont' : '';
+
     let retweetText = '';
     
     if (isRetweet) {
@@ -142,7 +176,7 @@ function createPostHtml(postData) {
 
     let replyFlag = "";
     
-    if (postData.replyTo) {
+    if (postData.replyTo && postData.replyTo._id) {
 
         if (!postData.replyTo._id) {
             return alert("Отсутствует реплай")
@@ -158,7 +192,12 @@ function createPostHtml(postData) {
         
     }
 
-    return `<div class='post' data-id='${postData._id}'>
+    let buttons = "";
+    if (postData.postedBy._id == userLoggedIn._id) {
+        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class="fas fa-times"></i></button>`;
+    }
+
+    return `<div class='post ${largeFontClass}' data-id='${postData._id}'>
                 <div class='postActionContainer'>
                     ${retweetText}
                 </div>
@@ -171,6 +210,7 @@ function createPostHtml(postData) {
                             <a href='/profile/${postedBy.username}' class='displayName'>${displayName}</a>
                             <span class='username'>@${postedBy.username}</span>
                             <span class='date'>${timestamps}</span>
+                            ${buttons}
                         </div>
                         ${replyFlag}
                         <div class='postBody'>
@@ -253,4 +293,21 @@ function outputPosts(results, container) {
     if (results.length == 0) {
         container.append("<span class='NoResults'>Вы ещё не создали ниодин пост</span>")
     }
+}
+
+function outputPostsWithReplies(results, container) {
+    container.html("");
+
+    if (results.replyTo !== undefined && results.replyTo._id !== undefined) {
+        const html = createPostHtml(results.replyTo)
+        container.append(html)
+    }
+
+    const mainPostHtml = createPostHtml(results.postData, true);
+    container.append(mainPostHtml);
+
+    results.replies.forEach(result => {
+        const html = createPostHtml(result)
+        container.append(html)
+    });
 }

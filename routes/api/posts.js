@@ -16,8 +16,20 @@ router.get("/:id", async (req, res, next) => {
 
     const postId = req.params.id;
 
-    let results = await getPosts({_id: postId});
-    results = results[0];
+    let postData = await getPosts({_id: postId});
+
+    postData = postData[0];
+
+    const results = {
+        postData: postData
+    }
+
+    if (postData.replyTo !== undefined) {
+        results.replyTo = postData.replyTo;
+    }
+
+    results.replies = await getPosts({replyTo: postId})
+
     res.status(200).send(results);
 })
 
@@ -113,6 +125,14 @@ router.post("/:id/retweet", async (req, res, next) => {
 
 })
 
+router.delete("/:id", (req, res, next) => {
+    Post.findByIdAndDelete(req.params.id)
+    .then(() => res.sendStatus(202))
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
 
 async function getPosts(filter) {
     let results = await Post.find(filter)
@@ -125,6 +145,5 @@ async function getPosts(filter) {
     results = await User.populate(results, {path: "replyTo.postedBy"}) 
     return await User.populate(results, {path: "retweetData.postedBy"}) 
 }
-
 
 module.exports = router;

@@ -39,15 +39,12 @@ router.post("/", async (req, res, next) => {
                 req.session.user = user;
                 return res.redirect("/");
             } 
-        }
-        
+        } 
         payload.errorMessage = "Некоректные данные";
         res.status(200).render("login.pug", payload);
     }
-
     payload.errorMessage = "Заполните все поля";
     res.status(200).render("login.pug", payload);
-
 })
 
 module.exports = router;

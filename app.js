@@ -7,6 +7,7 @@ const loginRoute = require('./routes/loginRoutes');
 const registerRoute = require('./routes/registerRoutes');
 const logoutRoute = require('./routes/logoutRoutes')
 const postsApiRoute = require('./routes/api/posts')
+const postRoute = require('./routes/postRoutes')
 const mongoose = require('./database')
 const config = require('./config')
 
@@ -32,11 +33,12 @@ app.use("/login", loginRoute);
 app.use("/logout", logoutRoute);
 app.use("/register", registerRoute);
 app.use("/api/posts", postsApiRoute);
+app.use("/posts", middleware.requireLogin, postRoute);
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
     const payload = {
-        pageTitle: "Home",
+        pageTitle: "Главная",
         userLoggedIn: req.session.user,
         userLoggedInJs: JSON.stringify(req.session.user)
     }
