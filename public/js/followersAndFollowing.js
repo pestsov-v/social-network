@@ -36,6 +36,18 @@ function outputUsers(results, container) {
 function createUserHtml(userData, showFollowButton) {
 
     const name = userData.firstName + " " + userData.lastName;
+    const isFollowing = (userLoggedIn.following && userLoggedIn.following.includes(userData._id))
+    let followButton = ""
+
+    const text = isFollowing ? "Подписан" : "Подписаться"
+    const buttonClass = isFollowing ? "followButton following" : "followButton"
+
+
+    if (showFollowButton && userLoggedIn._id != userData._id) {
+        followButton = `<div class='followButtonContainer'>
+                            <button class='${buttonClass}' data-user='${userData._id}'>${text}</button>
+                    </div>`
+    }
 
     return `<div class='user'>
                 <div class='userImageContainer'>
@@ -47,5 +59,6 @@ function createUserHtml(userData, showFollowButton) {
                         <span class='username'>@${userData.username}</span>
                     </div>
                 </div>
+                ${followButton}
             </div>`;
 }
