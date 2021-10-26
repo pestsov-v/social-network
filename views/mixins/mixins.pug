@@ -75,3 +75,20 @@ mixin createImageUploadModal()
                 .modal-footer
                     button.btn.btn-secondary(type='button' data-dismiss='modal') Отменить
                     button#imageUploadButton.btn.btn-primary(type='button') Сохранить
+
+mixin createCoverPhotoUploadModal()
+    #coverPhotoUploadModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='coverPhotoModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#coverPhotoModalLabel.modal-title Изменить фото обложки
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    input#coverPhoto(type="file", name="filePhoto")
+
+                    .coverPhotoPreviewContainer
+                        img#coverPreview
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Отменить
+                    button#coverPhotoButton.btn.btn-primary(type='button') Сохранить
