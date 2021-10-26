@@ -1,9 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const multer = require('multer')
+const path = require('path')
+const fs = require('fs')
 const User = require('../../schemas/UserSchema')
-const Post = require('../../schemas/PostSchema');
-const app = express();
 const router = express.Router();
+
+const upload = multer({ dest: "uploads/"})
 
 router.put("/:userId/follow", async (req, res, next) => {
 
@@ -52,6 +54,27 @@ router.get("/:userId/followers", async (req, res, next) => {
     .catch(error => {
         console.log(error);
         res.sendStatus(400);
+    })
+})
+
+router.post("/profilePicture", upload.single("croppedImage"), async (req, res, next) => {
+    if (!req.file) {
+        console.log("Отсутствует файл, который должен прийти в запросе от ajax")
+        return res.sendStatus(400)
+    } 
+
+    const filePath = `/uploads/images/${req.file.filename}.png`;
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, `../../${filePath}`);
+
+    fs.rename(tempPath, targetPath, async error => {
+        if (error != null) {
+            console.log(error);
+            return res.sendStatus(400);
+        }
+
+        req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, { new:true });
+        res.sendStatus(204);
     })
 })
 

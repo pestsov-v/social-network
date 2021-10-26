@@ -1,3 +1,5 @@
+let cropper
+
 $("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
@@ -80,6 +82,52 @@ $("#deletePostButton").click((event) => {
             
             location.reload();
         }
+    })
+})
+
+$("#filePhoto").change(function() {
+    if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const image = document.getElementById("imagePreview")
+            image.src = event.target.result
+
+            if (cropper !== undefined) {
+                cropper.destroy()
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 1 / 1,
+                background: false
+            })
+
+        }
+    
+        reader.readAsDataURL(this.files[0]);
+    
+    }
+})
+
+$("#imageUploadButton").click(() => {
+    const canvas = cropper.getCroppedCanvas();
+
+    if(canvas == null) {
+        alert("Отсутствует картинка. Загрузите желаемое фото профиля.")
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        const formData = new FormData();
+        formData.append("croppedImage", blob);
+        
+        $.ajax({
+            url: "/api/users/profilePicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
     })
 })
 
