@@ -86,9 +86,6 @@ $("#deletePostButton").click((event) => {
 })
 
 $("#filePhoto").change(function() {
-
-
-
     if (this.files && this.files[0]) {
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -109,6 +106,29 @@ $("#filePhoto").change(function() {
         reader.readAsDataURL(this.files[0]);
     
     }
+})
+
+$("#imageUploadButton").click(() => {
+    const canvas = cropper.getCroppedCanvas();
+
+    if(canvas == null) {
+        alert("Отсутствует картинка. Загрузите желаемое фото профиля.")
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        const formData = new FormData();
+        formData.append("croppedImage", blob);
+        
+        $.ajax({
+            url: "/api/users/profilePicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
+    })
 })
 
 $(document).on("click", ".likeButton", (event) => {
