@@ -1,22 +1,20 @@
 :root {
-    --blue: #1fa2f1;
-    --blueBackhround: rgba(212, 237, 255, 0.6);
+    --blue: #1FA2F1;
+    --blueLight: #9BD1F9;
+    --blueBackground: rgba(212, 237, 255, 0.6);
     --buttonHoverBg: #d4edff;
     --lightGrey: rgb(230, 236, 240);
     --spacing: 15px;
-    --blueLight: #9bd1f9;
     --greyText: rgb(101, 119, 134);
-    --greyButtonText: rgba(0, 0, 0, 0.34);
-    --red: rgb(226, 34, 94);
-    --green: rgb(23, 191, 99);
-    --greenBackground: rgba(23, 191, 99, 0.1);
-    --redBackground: rgba(226, 34, 94, 0.34);
-
-}   
+    --greyButtonText: rgba(0,0,0,0.34);
+    --red: rgb(226,34,94);
+    --redBackground: rgba(226,34,94,0.1);
+    --green: rgb(23,191,99);
+    --greenBackground: rgba(23,191,99,0.1);
+}
 
 * {
     outline: none !important;
-
 }
 
 a {
@@ -49,10 +47,11 @@ nav a {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #212529;
 }
 
 nav a.blue {
-    color: var(--blue)
+    color: var(--blue);
 }
 
 nav a:hover {
@@ -71,14 +70,13 @@ button {
     color: var(--greyButtonText);
 }
 
-
 button i,
 button span {
     pointer-events: none;
 }
 
 .mainSectionContainer {
-    padding: 0;
+    padding:  0;
     border-left: 1px solid var(--lightGrey);
     border-right: 1px solid var(--lightGrey);
     display: flex;
@@ -90,7 +88,7 @@ button span {
     padding: 0 var(--spacing);
     display: flex;
     align-items: center;
-    border-bottom: 10px solid var(--lightGrey);
+    border-bottom: 1px solid var(--lightGrey);
     flex-shrink: 0;
 }
 
@@ -105,7 +103,6 @@ button span {
     flex-shrink: 0;
 }
 
-
 .modal .postFormContainer {
     border: none;
     padding: 0;
@@ -114,7 +111,6 @@ button span {
 
 .modal .post {
     padding: 0 0 var(--spacing) 0;
-    padding-bottom: var(--spacing);
 }
 
 .userImageContainer {
@@ -133,7 +129,7 @@ button span {
     padding-left: var(--spacing);
 }
 
-.textareaContainer textarea{
+.textareaContainer textarea {
     width: 100%;
     border: none;
     resize: none;
@@ -175,7 +171,7 @@ button span {
 
 .username,
 .date {
-    color: var(--greyText);
+    color: var(--greyText)
 }
 
 .displayName {
@@ -211,28 +207,26 @@ button span {
     border-radius: 50%;
 }
 
-
 .postButtonContainer.red button.active {
     color: var(--red);
-}  
-
+}
 
 .postButtonContainer.red button:hover {
     color: var(--red);
-    background-color: var(--redBackground);
-}  
+    background-color: var(--redBackground)
+}
 
 .postButtonContainer.green button.active {
     color: var(--green);
-} 
+}
 
 .postButtonContainer.green button:hover {
     color: var(--green);
-    background-color: var(--greenBackground);
+    background-color: var(--greenBackground)
 }
 
 .postActionContainer {
-    padding-left: 45px;
+    padding-left: 35px;
     font-size: 13px;
     color: var(--greyText);
     margin-bottom: 5px;
@@ -260,21 +254,22 @@ button span {
 }
 
 .errorMessage {
-    padding: var(--spacing)
+    padding: var(--spacing);
 }
 
-.profileHeaderContainer .coverPhotoContainer {
+.coverPhotoSection {
     height: 180px;
     background-color: var(--blue);
     position: relative;
 }
 
 .profileHeaderContainer .userImageContainer {
-    height: 132px;
     width: 132px;
+    height: 132px;
     margin-left: var(--spacing);
     position: absolute;
     bottom: -66px;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -323,7 +318,7 @@ button span {
 }
 
 .followersContainer span:not(.value) {
-    color: var(--greyText)
+    color: var(--greyText);
 }
 
 .followersContainer a {
@@ -333,7 +328,6 @@ button span {
 .followersContainer a:hover {
     border-bottom: 1px solid #000;
 }
-
 
 .tabsContainer {
     display: flex;
@@ -358,7 +352,7 @@ button span {
 
 .tab:hover {
     color: var(--blue);
-    background-color: var(--blueBackhround);
+    background-color: var(--blueBackground);
 }
 
 .noResults {
@@ -381,18 +375,34 @@ button span {
     padding: 0 var(--spacing)
 }
 
-.profilePictureButton {
+.profilePictureButton,
+.coverPhotoButton {
     position: absolute;
     font-size: 50px;
-    color: rgba(0,0,00.6);
+    color: rgba(0,0,0,0.6);
     display: none;
 }
 
-.userImageContainer:hover .profilePictureButton {
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoSection:hover .coverPhotoButton {
     display: block;
 }
 
-#imagePreview {
+.coverPhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.coverPhotoContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#imagePreview,
+#coverPreview {
     width: 100%;
     display: block;
     max-width: 100%;
