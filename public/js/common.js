@@ -1,3 +1,5 @@
+let cropper
+
 $("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
@@ -81,6 +83,32 @@ $("#deletePostButton").click((event) => {
             location.reload();
         }
     })
+})
+
+$("#filePhoto").change(function() {
+
+
+
+    if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const image = document.getElementById("imagePreview")
+            image.src = event.target.result
+
+            if (cropper !== undefined) {
+                cropper.destroy()
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 1 / 1,
+                background: false
+            })
+
+        }
+    
+        reader.readAsDataURL(this.files[0]);
+    
+    }
 })
 
 $(document).on("click", ".likeButton", (event) => {

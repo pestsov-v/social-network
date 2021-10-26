@@ -391,3 +391,9 @@ button span {
 .userImageContainer:hover .profilePictureButton {
     display: block;
 }
+
+#imagePreview {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+}
