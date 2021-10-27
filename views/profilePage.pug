@@ -56,6 +56,7 @@ block content
             +createTab("Сообщения", `/profile/${profileUser.username}`, selectedTab != 'replies')
             +createTab("Ответы", `/profile/${profileUser.username}/replies`, selectedTab == 'replies')
 
+        .pinnedPostContainer
         .postsContainer
 
         +createPostModals(userLoggedIn)

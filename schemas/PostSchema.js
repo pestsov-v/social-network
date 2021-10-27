@@ -25,6 +25,9 @@ const PostSchema = new Schema({
     replyTo: {
         type: Schema.Types.ObjectId,
         ref: 'Post'
+    },
+    pinned: {
+        type: Boolean
     }
 
 }, {timestamps: true})

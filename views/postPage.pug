@@ -3,8 +3,10 @@ extends layouts/main-layout.pug
 block content 
     script. 
         const postId = '!{postId}'
+ 
     .postsContainer
-        +createPostModals(userLoggedIn)
+
+    +createPostModals(userLoggedIn)
 
 
 block scripts 
