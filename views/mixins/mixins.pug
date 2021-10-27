@@ -45,6 +45,9 @@ mixin createDeletePostModal()
 mixin createPostModals(userLoggedIn)
     +createReplyModal(userLoggedIn)
     +createDeletePostModal()
+    +createPinnnedPostModal()
+    +creatUnpinPostModal()
+    
 
 
 mixin createFollowButton(user, isFollowing)
@@ -92,3 +95,31 @@ mixin createCoverPhotoUploadModal()
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Отменить
                     button#coverPhotoButton.btn.btn-primary(type='button') Сохранить
+
+mixin createPinnnedPostModal()
+    #confirmPinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='confirmPinModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#confirmPinModalLabel.modal-title Закрепить сообщение
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p Закрепить это сообщение вверху вашей ленты? Вы можете закрепить только одно сообщение.
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Отменить
+                    button#pinPostButton.btn.btn-primary(type='button') Закрепить
+
+mixin creatUnpinPostModal()
+    #unpinModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='unpinModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#unpinPinModalLabel.modal-title Открепить сообщение
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    p Вы уверены, что хотите открепить закреплённое сообщение?
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Отменить
+                    button#unpinPostButton.btn.btn-primary(type='button') Открепить
