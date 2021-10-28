@@ -597,7 +597,7 @@ function outputSelectableUsers(results, container) {
 
     results.forEach(result => {
 
-        if (result._id == userLoggedIn._id) {
+        if (result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)) {
             return;
         }
 
@@ -614,7 +614,21 @@ function outputSelectableUsers(results, container) {
 
 function userSelected(user) {
     selectedUsers.push(user);
+    updateSelectedUsersHtml();
     $("#userSearchTextbox").val("").focus();
     $(".resultsContainer").html("");
     $("#createChatButton").prop("disabled", false)
+}
+
+function updateSelectedUsersHtml() {
+    let elements = [];
+
+    selectedUsers.forEach(user => {
+        const name = user.firstName + " " + user.lastName
+        const userElement = $(`<span class='selectedUser'>${name}</span>`);
+        elements.push(userElement);
+    })
+
+    $(".selectedUser").remove();
+    $("#selectedUsers").prepend(elements);
 }
