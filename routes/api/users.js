@@ -7,6 +7,27 @@ const router = express.Router();
 
 const upload = multer({ dest: "uploads/"})
 
+router.get("/", async (req, res, next) => {
+    let searchObj = req.query;
+
+    if (req.query.search !== undefined) {
+        searchObj = {
+            $or: [
+                {firstName: { $regex: req.query.search, $options: "i" }},
+                {lastName: { $regex: req.query.search, $options: "i" }},
+                {username: { $regex: req.query.search, $options: "i" }}
+            ]
+        }
+    }
+
+    User.find(searchObj)
+    .then(results => res.status(200).send(results))
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(400);
+    })
+});
+
 router.put("/:userId/follow", async (req, res, next) => {
 
     let userId = req.params.userId;
@@ -21,17 +42,17 @@ router.put("/:userId/follow", async (req, res, next) => {
     req.session.user = await User.findByIdAndUpdate(req.session.user._id, { [option]: { following: userId }}, {new: true})
     .catch(err => {
         console.log(err);
-        res.status(400);
+        res.sendStatus(400);
     })
     
     User.findByIdAndUpdate(userId, { [option]: { followers: req.session.user._id }})
     .catch(err => {
         console.log(err);
-        res.status(400);
+        res.sendStatus(400);
     }) 
 
     res.status(200).send(req.session.user)
-})
+});
 
 router.get("/:userId/following", async (req, res, next) => {
     User.findById(req.params.userId)
@@ -43,7 +64,7 @@ router.get("/:userId/following", async (req, res, next) => {
         console.log(error);
         res.sendStatus(400);
     })
-})
+});
 
 router.get("/:userId/followers", async (req, res, next) => {
     User.findById(req.params.userId)
@@ -55,7 +76,7 @@ router.get("/:userId/followers", async (req, res, next) => {
         console.log(error);
         res.sendStatus(400);
     })
-})
+});
 
 router.post("/profilePicture", upload.single("croppedImage"), async (req, res, next) => {
     if (!req.file) {
@@ -76,7 +97,7 @@ router.post("/profilePicture", upload.single("croppedImage"), async (req, res, n
         req.session.user = await User.findByIdAndUpdate(req.session.user._id, {profilePic: filePath}, { new:true });
         res.sendStatus(204);
     })
-})
+});
 
 router.post("/coverPhoto", upload.single("croppedImage"), async (req, res, next) => {
     if(!req.file) {
