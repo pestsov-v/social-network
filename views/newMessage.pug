@@ -1,0 +1,10 @@
+extends layouts/main-layout.pug
+
+block content
+    .chatPageContainer 
+        .chatTitleBar 
+            label(for="userSearchTextbox") Кто: 
+            #selectedUsers 
+                input#userSearchTextbox(type="text", placeholder="Введите имя необходимого пользователя")
+        .resultsContainer 
+        button#createChatButton(disabled) Создать переписку

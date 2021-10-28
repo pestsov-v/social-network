@@ -1,4 +1,6 @@
-let cropper
+let cropper;
+let timer;
+let selectedUsers = [];
 
 $("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
@@ -224,7 +226,7 @@ $("#coverPhoto").change(function(){
 })
 
 $("#coverPhotoButton").click(() => {
-    var canvas = cropper.getCroppedCanvas();
+    let canvas = cropper.getCroppedCanvas();
 
     if(canvas == null) {
         alert("Отсутствует картинка. Загрузите желаемое фото обложки.");
@@ -232,7 +234,7 @@ $("#coverPhotoButton").click(() => {
     }
 
     canvas.toBlob((blob) => {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append("croppedImage", blob);
 
         $.ajax({
@@ -244,6 +246,34 @@ $("#coverPhotoButton").click(() => {
             success: () => location.reload()
         })
     })
+})
+
+$("#userSearchTextbox").keydown((event) => {
+    clearTimeout(timer);
+    let textbox = $(event.target);
+    let value = textbox.val();
+
+    if (value == "" && (event.which == 8 || event.keyCode == 8)) {
+        selectedUsers.pop();
+        updateSelectedUsersHtml();
+        $(".resultsContainer").html("");
+
+        if (selectedUsers.length == 0) {
+            $("#createChatButton").prop("disabled", true)
+        }
+
+        return;
+    }
+
+    timer = setTimeout(() => {
+        value = textbox.val().trim();
+
+        if (value == "") {
+            $(".resultsContainer").html("");
+        } else {
+            searchUsers(value);
+        }
+    }, 1000)
 })
 
 $(document).on("click", ".likeButton", (event) => {
@@ -264,6 +294,17 @@ $(document).on("click", ".likeButton", (event) => {
                 button.removeClass("active");
             }
         }
+    })
+})
+
+$("#createChatButton").click(() => {
+    const data = JSON.stringify(selectedUsers);
+
+    $.post("/api/chats", { users: data }, chat => {
+
+        if (!chat || chat._id) return alert("Отсуствует айди чата")
+
+        window.location.href = `/messages/${chat._id}`;
     })
 })
 
@@ -332,7 +373,6 @@ $(document).on("click", ".followButton", (event) => {
         }
     })
 })
-
 
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
@@ -488,7 +528,6 @@ function timeDifference(current, previous) {
     }
 }
 
-
 function outputPosts(results, container) {
     container.html("");
 
@@ -522,7 +561,6 @@ function outputPostsWithReplies(results, container) {
         container.append(html)
     });
 }
-
 
 function outputUsers(results, container) {
     container.html("");
@@ -565,4 +603,51 @@ function createUserHtml(userData, showFollowButton) {
                 </div>
                 ${followButton}
             </div>`;
+}
+
+function searchUsers(searchTerm) {
+    $.get("/api/users", { search: searchTerm }, results => {
+        outputSelectableUsers(results, $(".resultsContainer"));
+    })
+}
+
+function outputSelectableUsers(results, container) {
+    container.html("");
+
+    results.forEach(result => {
+
+        if (result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)) {
+            return;
+        }
+
+        const html = createUserHtml(result, false);
+        let element = $(html);
+        element.click(() => userSelected(result))
+        container.append(element);
+    });
+
+    if(results.length == 0) {
+        container.append("<span class='noResults'>Ещё нет ниодной записи</span>")
+    }
+}
+
+function userSelected(user) {
+    selectedUsers.push(user);
+    updateSelectedUsersHtml();
+    $("#userSearchTextbox").val("").focus();
+    $(".resultsContainer").html("");
+    $("#createChatButton").prop("disabled", false)
+}
+
+function updateSelectedUsersHtml() {
+    let elements = [];
+
+    selectedUsers.forEach(user => {
+        const name = user.firstName + " " + user.lastName
+        const userElement = $(`<span class='selectedUser'>${name}</span>`);
+        elements.push(userElement);
+    })
+
+    $(".selectedUser").remove();
+    $("#selectedUsers").prepend(elements);
 }
