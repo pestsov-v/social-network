@@ -226,7 +226,7 @@ $("#coverPhoto").change(function(){
 })
 
 $("#coverPhotoButton").click(() => {
-    var canvas = cropper.getCroppedCanvas();
+    let canvas = cropper.getCroppedCanvas();
 
     if(canvas == null) {
         alert("Отсутствует картинка. Загрузите желаемое фото обложки.");
@@ -234,7 +234,7 @@ $("#coverPhotoButton").click(() => {
     }
 
     canvas.toBlob((blob) => {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append("croppedImage", blob);
 
         $.ajax({
@@ -294,6 +294,17 @@ $(document).on("click", ".likeButton", (event) => {
                 button.removeClass("active");
             }
         }
+    })
+})
+
+$("#createChatButton").click(() => {
+    const data = JSON.stringify(selectedUsers);
+
+    $.post("/api/chats", { users: data }, chat => {
+
+        if (!chat || chat._id) return alert("Отсуствует айди чата")
+
+        window.location.href = `/messages/${chat._id}`;
     })
 })
 

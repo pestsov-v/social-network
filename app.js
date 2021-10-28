@@ -10,13 +10,14 @@ const config = require('./config')
 const loginRoute = require('./routes/loginRoutes');
 const registerRoute = require('./routes/registerRoutes');
 const logoutRoute = require('./routes/logoutRoutes')
-const postsApiRoute = require('./routes/api/posts')
 const postRoute = require('./routes/postRoutes')
 const profileRoute = require('./routes/profileRoutes')
-const userRoute = require('./routes/api/users')
 const uploadRoute = require('./routes/uploadRoutes')
 const searchRoute = require('./routes/searchRoutes')
 const messagesRoute = require('./routes/messagesRoutes')
+const usersApiRoute = require('./routes/api/users')
+const postsApiRoute = require('./routes/api/posts')
+const chatsApiRoute = require('./routes/api/chats')
 
 const app = express();
 const PORT = 3003;
@@ -41,11 +42,12 @@ app.use("/logout", logoutRoute);
 app.use("/register", registerRoute);
 app.use("/posts", middleware.requireLogin, postRoute);
 app.use("/profile", middleware.requireLogin, profileRoute);
-app.use("/api/posts", postsApiRoute);
-app.use("/api/users", userRoute);
 app.use("/uploads", uploadRoute);
 app.use("/search", middleware.requireLogin, searchRoute);
 app.use("/messages", middleware.requireLogin, messagesRoute);
+app.use("/api/posts", postsApiRoute);
+app.use("/api/users", usersApiRoute);
+app.use("/api/chats", chatsApiRoute);
 
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
