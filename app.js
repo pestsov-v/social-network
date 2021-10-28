@@ -3,6 +3,10 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const middleware = require('./middleware');
+
+const mongoose = require('./database')
+const config = require('./config')
+
 const loginRoute = require('./routes/loginRoutes');
 const registerRoute = require('./routes/registerRoutes');
 const logoutRoute = require('./routes/logoutRoutes')
@@ -11,8 +15,7 @@ const postRoute = require('./routes/postRoutes')
 const profileRoute = require('./routes/profileRoutes')
 const userRoute = require('./routes/api/users')
 const uploadRoute = require('./routes/uploadRoutes')
-const mongoose = require('./database')
-const config = require('./config')
+const searchRoute = require('./routes/searchRoutes')
 
 const app = express();
 const PORT = 3003;
@@ -36,10 +39,11 @@ app.use("/login", loginRoute);
 app.use("/logout", logoutRoute);
 app.use("/register", registerRoute);
 app.use("/posts", middleware.requireLogin, postRoute);
-app.use("/profile", profileRoute);
+app.use("/profile", middleware.requireLogin, profileRoute);
 app.use("/api/posts", postsApiRoute);
 app.use("/api/users", userRoute);
 app.use("/uploads", uploadRoute);
+app.use("/search", middleware.requireLogin, searchRoute)
 
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
