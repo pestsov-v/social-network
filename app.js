@@ -16,6 +16,7 @@ const profileRoute = require('./routes/profileRoutes')
 const userRoute = require('./routes/api/users')
 const uploadRoute = require('./routes/uploadRoutes')
 const searchRoute = require('./routes/searchRoutes')
+const messagesRoute = require('./routes/messagesRoutes')
 
 const app = express();
 const PORT = 3003;
@@ -43,7 +44,8 @@ app.use("/profile", middleware.requireLogin, profileRoute);
 app.use("/api/posts", postsApiRoute);
 app.use("/api/users", userRoute);
 app.use("/uploads", uploadRoute);
-app.use("/search", middleware.requireLogin, searchRoute)
+app.use("/search", middleware.requireLogin, searchRoute);
+app.use("/messages", middleware.requireLogin, messagesRoute);
 
 
 app.get("/", middleware.requireLogin, (req, res, next) => {
