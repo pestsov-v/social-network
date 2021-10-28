@@ -1,0 +1,13 @@
+extends layouts/main-layout.pug
+
+block content 
+    .tabsContainer  
+        +createTab("Сообщения", `/search/posts`, selectedTab != 'users')
+        +createTab("Пользователи", `/search/users`, selectedTab == 'users')
+
+    .resultsContainer 
+
+    +createPostModals(userLoggedIn)
+
+block scripts 
+    script(src="/js/search.js") 
