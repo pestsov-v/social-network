@@ -1,4 +1,6 @@
-let cropper
+let cropper;
+let timer;
+let selectedUsers = [];
 
 $("#postTextarea, #replyTextarea").keyup(event => {
     const textbox = $(event.target)
@@ -246,6 +248,26 @@ $("#coverPhotoButton").click(() => {
     })
 })
 
+$("#userSearchTextbox").keydown((event) => {
+    clearTimeout(timer);
+    let textbox = $(event.target);
+    let value = textbox.val();
+
+    if (value == "" && event.keycode == 8) {
+        return;
+    }
+
+    timer = setTimeout(() => {
+        value = textbox.val().trim();
+
+        if (value == "") {
+            $(".resultsContainer").html("");
+        } else {
+            searchUsers(value);
+        }
+    }, 1000)
+})
+
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target);
     const postId = getPostIdFromElement(button);
@@ -332,7 +354,6 @@ $(document).on("click", ".followButton", (event) => {
         }
     })
 })
-
 
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
@@ -488,7 +509,6 @@ function timeDifference(current, previous) {
     }
 }
 
-
 function outputPosts(results, container) {
     container.html("");
 
@@ -522,7 +542,6 @@ function outputPostsWithReplies(results, container) {
         container.append(html)
     });
 }
-
 
 function outputUsers(results, container) {
     container.html("");
@@ -565,4 +584,37 @@ function createUserHtml(userData, showFollowButton) {
                 </div>
                 ${followButton}
             </div>`;
+}
+
+function searchUsers(searchTerm) {
+    $.get("/api/users", { search: searchTerm }, results => {
+        outputSelectableUsers(results, $(".resultsContainer"));
+    })
+}
+
+function outputSelectableUsers(results, container) {
+    container.html("");
+
+    results.forEach(result => {
+
+        if (result._id == userLoggedIn._id) {
+            return;
+        }
+
+        const html = createUserHtml(result, true);
+        let element = $(html);
+        element.click(() => userSelected(result))
+        container.append(element);
+    });
+
+    if(results.length == 0) {
+        container.append("<span class='noResults'>Ещё нет ниодной записи</span>")
+    }
+}
+
+function userSelected(user) {
+    selectedUsers.push(user);
+    $("#userSearchTextbox").val("").focus();
+    $(".resultsContainer").html("");
+    $("#createChatButton").prop("disabled", false)
 }

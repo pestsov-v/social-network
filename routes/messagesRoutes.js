@@ -5,7 +5,6 @@ const app = express();
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-
     res.status(200).render("inboxPage.pug", {
         pageTitle: "Входящие сообщения",
         userLoggedIn: req.session.user,
