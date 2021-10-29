@@ -208,7 +208,7 @@ $("#coverPhoto").change(function(){
     if(this.files && this.files[0]) {
         let reader = new FileReader();
         reader.onload = (e) => {
-            var image = document.getElementById("coverPreview");
+            let image = document.getElementById("coverPreview");
             image.src = e.target.result;
 
             if(cropper !== undefined) {
