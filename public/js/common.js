@@ -206,7 +206,7 @@ $("#imageUploadButton").click(() => {
 
 $("#coverPhoto").change(function(){    
     if(this.files && this.files[0]) {
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = (e) => {
             var image = document.getElementById("coverPreview");
             image.src = e.target.result;
