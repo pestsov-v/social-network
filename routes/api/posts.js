@@ -75,7 +75,7 @@ router.post("/", async (req, res, next) => {
         return res.sendStatus(400);
 }
 
-    var postData = {
+    let postData = {
         content: req.body.content,
         postedBy: req.session.user
 }
