@@ -20,11 +20,11 @@ function outputChatList(chatList, container) {
 }
 
 function createChatHtml(chatData) {
-    const chatName = "Название чата";
+    const chatName = "Чат";
     const image = "";
     const latestMessage = "Это последнее сообщение из чата";
 
-    return `<a href='/messages/${chatData._id}'>
+    return `<a href='/messages/${chatData._id}' class='resultListItem'>
                 <div class="resultsDetailsContainer">
                     <span class="heading">${chatName}</span>
                     <span class="subText">${latestMessage}</span>
