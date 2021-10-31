@@ -127,8 +127,22 @@ mixin creatUnpinPostModal()
 mixin createChatImage(chatData, userLoggedIn)
     if(!chatData)
         return 
-    
+
+    - var i = 0
+    - var maxImagesToShow = 3
+    - var remainingUsers = chatData.users.length - maxImagesToShow 
+    - remainingUsers-- 
+
     .chatImagesContainer 
+        if remainingUsers > 0
+            .userCount
+                span +#{remainingUsers}
 
         each user in chatData.users
+            if chatData.users.length != 1 && user._id == userLoggedIn._id 
+                - continue 
+            else if i >= maxImagesToShow
+                - break 
+
             img(src=user.profilePic, alt="Фото пользователя", title=user.firstName) 
+            - i++
