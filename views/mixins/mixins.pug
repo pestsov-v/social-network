@@ -123,3 +123,12 @@ mixin creatUnpinPostModal()
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Отменить
                     button#unpinPostButton.btn.btn-primary(type='button') Открепить
+
+mixin createChatImage(chatData, userLoggedIn)
+    if(!chatData)
+        return 
+    
+    .chatImagesContainer 
+
+        each user in chatData.users
+            img(src=user.profilePic, alt="Фото пользователя", title=user.firstName) 
