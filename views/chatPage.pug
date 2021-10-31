@@ -9,8 +9,9 @@ block content
             const chatId = '!{chat._id}';
 
         .chatPageContainer 
-            .chatTitleBarContainer 
-                span#chatName Название чата
+            .chatTitleBarContainer
+                +createChatImage(chat, userLoggedIn)
+                span#chatName Групповой чат
             
             .mainContentContainer 
                 .chatContainer
