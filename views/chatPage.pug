@@ -6,7 +6,19 @@ block content
         span.errorMessage #{errorMessage}
     else 
         script.
-            const chatId = '!{chat._id}'
+            const chatId = '!{chat._id}';
+
+        .chatPageContainer 
+            .chatTitleBarContainer 
+                span#chatName Название чата
+            
+            .mainContantContainer 
+                .chatContainer 
+
+                    .footer
+                        textarea(name="messageInput", placeholder="Введите сообщение...")
+                        button.sendMEssageButton 
+                            i.fas.fa-paper-plane 
 
 block scripts 
     script(src="/js/chat.js") 

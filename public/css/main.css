@@ -13,6 +13,13 @@
     --greenBackground: rgba(23,191,99,0.1);
 }
 
+html, body {
+    height: 100%;
+    min-height: 100%;
+    background-color: #fff;
+    font-weight: 300;
+}
+
 * {
     outline: none !important;
 }
@@ -60,8 +67,15 @@ nav a:hover {
     border-radius: 50%;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .wrapper > .row {
     margin: 0;
+    height: 100%;
 }
 
 button {
