@@ -1,0 +1,12 @@
+extends layouts/main-layout.pug
+
+block content
+
+    if errorMessage 
+        span.errorMessage #{errorMessage}
+    else 
+        script.
+            const chatId = '!{chat._id}'
+
+block scripts 
+    script(src="/js/chat.js") 
