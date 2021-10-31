@@ -594,7 +594,7 @@ button span {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .chatContainer .footer {
@@ -606,10 +606,10 @@ button span {
 .chatContainer .footer textarea {
     flex: 1;
     resize: none;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0,0,0,0.05);
     border-radius: 18px;
     border: none;
-    padding: 8px;
+    padding: 8px 12px;
     height: 42px;
 }
 
@@ -617,4 +617,12 @@ button span {
     background-color: transparent;
     color: var(--blue);
     font-size: 24px;
+}
+
+.chatMessages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: var(--spacing);
 }

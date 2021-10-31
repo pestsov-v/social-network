@@ -12,13 +12,13 @@ block content
             .chatTitleBarContainer 
                 span#chatName Название чата
             
-            .mainContantContainer 
-                .chatContainer 
-
+            .mainContentContainer 
+                .chatContainer
+                    .chatMessages
                     .footer
                         textarea(name="messageInput", placeholder="Введите сообщение...")
-                        button.sendMEssageButton 
-                            i.fas.fa-paper-plane 
+                        button.sendMessageButton
+                            i.fas.fa-paper-plane
 
 block scripts 
     script(src="/js/chat.js") 
