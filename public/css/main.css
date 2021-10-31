@@ -520,3 +520,33 @@ button span {
     color: var(--greyText);
     font-size: 14px;
 }
+
+.resultListItem img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.resultsImageContainer {
+    height: 40px;
+    width: 40px;
+    position: relative;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    padding: 5px;  
+}
+
+.groupChatImage img {
+    height: 65%;
+    width: 65%;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    border: 3px solid #fff;
+}
+
+.groupChatImage img:first-of-type {
+    top: 0;
+    right: 0;
+}
