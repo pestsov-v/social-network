@@ -26,9 +26,9 @@ function createChatHtml(chatData) {
 
     return `<a href='/messages/${chatData._id}' class='resultListItem'>
                 ${image}
-                <div class="resultsDetailsContainer">
-                    <span class="heading">${chatName}</span>
-                    <span class="subText">${latestMessage}</span>
+                <div class="resultsDetailsContainer ellipsis">
+                    <span class="heading ellipsis">${chatName}</span>
+                    <span class="subText ellipsis">${latestMessage}</span>
                 </div>
             </a>`
 }
