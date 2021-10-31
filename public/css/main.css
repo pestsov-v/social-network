@@ -589,3 +589,32 @@ button span {
     border: 1px solid var(--lightGrey);
     cursor: text;
 }
+
+.chatContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.chatContainer .footer {
+    display: flex;
+    padding: var(--spacing);
+    flex-shrink: 0px;
+}
+
+.chatContainer .footer textarea {
+    flex: 1;
+    resize: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 18px;
+    border: none;
+    padding: 8px;
+    height: 42px;
+}
+
+.chatContainer .footer button {
+    background-color: transparent;
+    color: var(--blue);
+    font-size: 24px;
+}
