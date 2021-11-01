@@ -146,3 +146,17 @@ mixin createChatImage(chatData, userLoggedIn)
 
             img(src=user.profilePic, alt="Фото пользователя", title=user.firstName) 
             - i++
+
+mixin creatChatNameModal(chat)
+    #chatNameModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='chatNameModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#chatNameModalLabel.modal-title Название чата
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+                .modal-body
+                    input#chatNameTextbox(type="text", placeholder="Введите название чата", value=chat.chatName) 
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Отменить
+                    button#chatNameButton.btn.btn-primary(type='button') Cохранить
