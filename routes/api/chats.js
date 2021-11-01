@@ -34,10 +34,29 @@ router.post("/", async (req, res, next) => {
 })
 
 router.get("/", async (req, res, next) => {
-    Chat.find({users: { $elemMatch: { $eq: req.session.user._id }}})
+    Chat.find({ users: { $elemMatch: { $eq: req.session.user._id } }})
     .populate("users")
     .sort({ updatedAt: -1 })
     .then(results => res.status(200).send(results))
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
+
+router.get("/:chatId", async (req, res, next) => {
+    Chat.findOne({ _id: req.params.chatId, users: { $elemMatch: { $eq: req.session.user._id } }})
+    .populate("users")
+    .then(results => res.status(200).send(results))
+    .catch(error => {
+        console.log(error);
+        res.sendStatus(400);
+    })
+})
+
+router.put("/:chatId", async (req, res, next) => {
+    Chat.findByIdAndUpdate(req.params.chatId, req.body)
+    .then(results => res.sendStatus(204))
     .catch(error => {
         console.log(error);
         res.sendStatus(400);
