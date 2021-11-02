@@ -19,7 +19,9 @@ router.post("/", async (req, res, next) => {
     };
 
     Message.create(newMessage)
-    .then(message => {
+    .then(async message => {
+        message = await message.populate("sender");
+        message = await message.populate("chat");
         res.status(201).send(message);
     })
     .catch(error => {
