@@ -1,4 +1,4 @@
-const {Schema, model} = require('mongoose')
+const {Schema, model, models} = require('mongoose')
 
 const ChatSchema = new Schema({
     chatName: {
@@ -19,5 +19,6 @@ const ChatSchema = new Schema({
     }
 }, {timestamps: true})
 
-const Chat = model('Chat', ChatSchema);
-module.exports = Chat;
+const Chat = models.Chat || model('Chat', ChatSchema);
+
+module.exports = Chat
