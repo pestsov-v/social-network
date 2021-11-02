@@ -705,9 +705,26 @@ button span {
 }
 
 .chatMessages .message.mine.last .messageBody {
-    border-top-right-radius: 2px;
+    border-bottom-right-radius: 18px;
 }
 
 .chatMessages .message.mine.last:not(.first) .messageBody {
     border-top-right-radius: 2px;
+}
+
+.chatMessages .message.theirs.first .messageBody {
+    border-bottom-left-radius: 2px;
+}
+
+.chatMessages .message.theirs:not(.first):not(.last) .messageBody {
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+}
+
+.chatMessages .message.theirs.last .messageBody {
+    border-bottom-left-radius: 18px;
+}
+
+.chatMessages .message.theirs.last:not(.first) .messageBody {
+    border-top-left-radius: 2px;
 }
