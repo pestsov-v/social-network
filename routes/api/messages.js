@@ -2,9 +2,8 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const bodyParser = require("body-parser")
-const Message = require('../../schemas/MessageSchema');
-
-app.use(bodyParser.urlencoded({ extended: false }));
+const Message = require('../../schemas/MessageSchema')
+const Chat = require('../../schemas/ChatSchema')
 
 router.post("/", async (req, res, next) => {
     if(!req.body.content || !req.body.chatId) {
@@ -19,7 +18,13 @@ router.post("/", async (req, res, next) => {
     };
 
     Message.create(newMessage)
-    .then(message => {
+    .then(async message => {
+        message = await message.populate("sender");
+        message = await message.populate("chat");
+
+        await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message })
+        .catch(error => console.log(error))
+
         res.status(201).send(message);
     })
     .catch(error => {

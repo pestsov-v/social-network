@@ -11,11 +11,13 @@ block content
         .chatPageContainer 
             .chatTitleBarContainer
                 +createChatImage(chat, userLoggedIn)
-                span#chatName(data-toggle="modal", data-target="#chatNameModal") Чат
+                span#chatName(data-toggle="modal", data-target="#chatNameModal")
             
-            .mainContentContainer 
-                .chatContainer
-                    .chatMessages
+            .mainContentContainer
+                .loadingSpinnerContainer 
+                    img(src="/images/loadingSpinner.gif", alt="Спиннер загрузки") 
+                .chatContainer(style="visibility: hidden")
+                    ui.chatMessages
                     .footer
                         textarea.inputTextbox(name="messageInput", placeholder="Введите сообщение...")
                         button.sendMessageButton
