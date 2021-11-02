@@ -663,3 +663,26 @@ button span {
 #chatNameTextbox {
     width: 100%;
 }
+
+.chatMessages .message {
+    padding-bottom: 2px;
+    list-style: none;
+    display: flex;
+    align-items: flex-end;
+    flex-shrink: 0;
+    -webkit-flex: 0;
+}
+
+.chatMessages .message .messageBody {
+    background-color: #f1f0f0;
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-size: 14px;
+}
+
+.chatMessages .message .messageContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 55%;
+}
+
