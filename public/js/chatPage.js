@@ -1,12 +1,19 @@
 $(document).ready(() => {
 
-    $.get(`/api/chats/${chatId}/messages`, (data) => {
-        const messages = [];
+    $.get(`/api/chats/${chatId}`, (data) => $("#chatName").text(getChatName(data)))
 
-        data.forEach(message => {
-            const html = createMessageHtml(message);
+    $.get(`/api/chats/${chatId}/messages`, (data) => {
+        let messages = [];
+        let lastSenderId = "";
+
+
+        data.forEach((message, index) => {
+            const html = createMessageHtml(message, data[index + 1], lastSenderId);
             messages.push(html)
-        })
+
+            lastSenderId = message.sender._id;
+
+        })  
 
         const messagesHtml = messages.join("");
         addMessagesHtmlToPage(messagesHtml)
@@ -74,14 +81,30 @@ function addChatMessageHtml(message) {
         return
     } 
 
-    const messageDiv = createMessageHtml(message);
+    const messageDiv = createMessageHtml(message, null, "");
 
     addMessagesHtmlToPage(messageDiv)
 }
 
-function createMessageHtml(message) {
+function createMessageHtml(message, nextMessage, lastSenderId) {
+
+    const sender = message.sender;
+    const senderName = sender.firstName + " " + sender.lastName;
+    const currentSenderId = sender._id;
+    const nextSenderId = nextMessage != null ? nextMessage.sender._id : "";
+    const isFirst = lastSenderId != currentSenderId;
+    const isLast = nextSenderId != currentSenderId;
+
     const isMine = message.sender._id == userLoggedIn._id;
-    const liClassName = isMine ? "mine" : "theirs";
+    let liClassName = isMine ? "mine" : "theirs";
+
+    if (isFirst) {
+        liClassName += " first";
+    }
+
+    if (isLast) {
+        liClassName += " last"
+    }
     
 
     return `<li class='message ${liClassName}'>
