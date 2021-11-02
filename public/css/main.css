@@ -758,3 +758,15 @@ button span {
 .chatMessages .messageBody.last {
     margin-bottom: 7px;
 }
+
+.loadingSpinnerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.loadingSpinnerContainer img {
+    width: 50%;
+    max-width: 75px;
+}
