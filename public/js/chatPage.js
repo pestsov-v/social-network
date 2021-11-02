@@ -1,7 +1,15 @@
 $(document).ready(() => {
 
     $.get(`/api/chats/${chatId}/messages`, (data) => {
-        console.log(data)
+        const messages = [];
+
+        data.forEach(message => {
+            const html = createMessageHtml(message);
+            messages.push(html)
+        })
+
+        const messagesHtml = messages.join("");
+        addMessagesHtmlToPage(messagesHtml)
     })
 })
 
@@ -35,6 +43,10 @@ $(".inputTextbox").keydown((event) => {
     
 })
 
+function addMessagesHtmlToPage(html) {
+    $(".chatMessages").append(html);
+}
+
 function messageSubmitted() {
     const content = $(".inputTextbox").val().trim()
 
@@ -64,7 +76,7 @@ function addChatMessageHtml(message) {
 
     const messageDiv = createMessageHtml(message);
 
-    $(".chatMessages").append(messageDiv)
+    addMessagesHtmlToPage(messageDiv)
 }
 
 function createMessageHtml(message) {
