@@ -695,3 +695,19 @@ button span {
     color: #fff;
 }
 
+.chatMessages .message.mine.first .messageBody {
+    border-bottom-right-radius: 2px;
+}
+
+.chatMessages .message.mine:not(.first):not(.last) .messageBody {
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.chatMessages .message.mine.last .messageBody {
+    border-top-right-radius: 2px;
+}
+
+.chatMessages .message.mine.last:not(.first) .messageBody {
+    border-top-right-radius: 2px;
+}
