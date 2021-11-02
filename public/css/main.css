@@ -686,6 +686,14 @@ button span {
     max-width: 55%;
 }
 
+.chatMessages .message.mine .messageContainer {
+    align-items: flex-end;
+}
+
+.chatMessages .message.theirs .messageContainer {
+    align-items: flex-start;
+}
+
 .chatMessages .message.mine {
     flex-direction: row-reverse;
 }
@@ -727,4 +735,24 @@ button span {
 
 .chatMessages .message.theirs.last:not(.first) .messageBody {
     border-top-left-radius: 2px;
+}
+
+.senderName {
+    color: rgba(0,0,0,0.4)
+}
+
+.chatMessages .imageContainer {
+    height: 24px;
+    width: 24px;
+    margin-right: 7px;
+}
+
+.chatMessages img {
+    height: 100%;
+    border-radius: 50%;
+    vertical-align: bottom;
+}
+
+.chatMessages .messageBody.last {
+    margin-bottom: 7px;
 }

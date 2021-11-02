@@ -88,6 +88,10 @@ function addChatMessageHtml(message) {
 
 function createMessageHtml(message, nextMessage, lastSenderId) {
 
+    let nameElement = "";
+    let imageContainer = "";
+    let profileImage = "";
+
     const sender = message.sender;
     const senderName = sender.firstName + " " + sender.lastName;
     const currentSenderId = sender._id;
@@ -100,15 +104,27 @@ function createMessageHtml(message, nextMessage, lastSenderId) {
 
     if (isFirst) {
         liClassName += " first";
+
+        if (!isMine) {
+            nameElement = `<span class='senderName'>${senderName}</span>`
+        }
     }
 
     if (isLast) {
         liClassName += " last"
+        profileImage = `<img src='${sender.profilePic}'>`
+    }
+
+    if (!isMine) {
+        imageContainer = `<div class='imageContainer'>
+                            ${profileImage}
+                        </div>`
     }
     
-
     return `<li class='message ${liClassName}'>
+                ${imageContainer}
                 <div class='messageContainer'>
+                    ${nameElement}
                     <span class='messageBody'>
                         ${message.content}
                     </span>
