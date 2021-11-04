@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session')
 const middleware = require('./middleware');
 
+
+
 const mongoose = require('./database')
 const config = require('./config')
 
@@ -23,8 +25,11 @@ const messagesApiRoute = require('./routes/api/messages')
 const app = express();
 const PORT = 3003;
 const serverFunction = () => console.log(`Server listening on port ${PORT}`);
-
+ 
 const server = app.listen(PORT, serverFunction);
+const io = require('socket.io')(server, { pingTimeout: 60000 });
+
+
 
 app.set("view engine", "pug");
 app.set("views", "views");
@@ -61,4 +66,8 @@ app.get("/", middleware.requireLogin, (req, res, next) => {
     }
 
     res.status(200).render("home.pug", payload);
+})
+
+io.on("connection", (socket) => {
+    console.log("connected to socket.io")
 })
