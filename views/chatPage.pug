@@ -18,6 +18,10 @@ block content
                     img(src="/images/loadingSpinner.gif", alt="Спиннер загрузки") 
                 .chatContainer(style="visibility: hidden")
                     ui.chatMessages
+
+                    .typingDots
+                        img(src="/images/dots.gif", alt="typing dots")
+
                     .footer
                         textarea.inputTextbox(name="messageInput", placeholder="Введите сообщение...")
                         button.sendMessageButton
