@@ -17,11 +17,15 @@ const profileRoute = require('./routes/profileRoutes')
 const uploadRoute = require('./routes/uploadRoutes')
 const searchRoute = require('./routes/searchRoutes')
 const messagesRoute = require('./routes/messagesRoutes')
+const notificationsRoute = require('./routes/notificationsRoute')
+
 const usersApiRoute = require('./routes/api/users')
 const postsApiRoute = require('./routes/api/posts')
 const chatsApiRoute = require('./routes/api/chats')
 const messagesApiRoute = require('./routes/api/messages')
-const notificationsRoute = require('./routes/notificationsRoute')
+const notificationsApiRoute = require('./routes/api/notifications')
+
+
 
 const app = express();
 const PORT = 3003;
@@ -57,6 +61,7 @@ app.use("/api/posts", postsApiRoute);
 app.use("/api/users", usersApiRoute);
 app.use("/api/chats", chatsApiRoute);
 app.use("/api/messages", messagesApiRoute);
+app.use("/api/notifications", notificationsApiRoute)
 
 
 
