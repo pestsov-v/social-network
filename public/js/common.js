@@ -677,3 +677,14 @@ function messageReceived(newMessage) {
         addChatMessageHtml(newMessage)
     }
 }
+
+function markNotificationAsOpened(notificationId = null, callback = null) {
+    if (callback == null) callback = () => location.reload();
+
+    const url = notificationId != null ? `/api/notifications/${notificationId}/markAsOpened` : `/api/notifications/markAsOpened`
+    $.ajsx({
+        url: url,
+        type: "PUT",
+        success: () => callback()
+    })
+}
