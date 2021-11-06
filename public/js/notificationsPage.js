@@ -18,8 +18,9 @@ function outputNotificationList(notifications, container) {
 function createNotificationHtml(notification) {
     const userFrom = notification.userFrom;
     const text = getNotificationText(notification)
+    const href = getNotificationUrl(notification)
 
-    return `<a href='#' class='resultListItem notification'>
+    return `<a href='${href}' class='resultListItem notification'>
                 <div class='resultsImageContainer'>
                     <img src='${userFrom.profilePic}'>
                 </div>
@@ -50,4 +51,18 @@ function getNotificationText(notification) {
     }
 
     return `<span class='ellipsis'>${text}</span>`
+}
+
+function getNotificationUrl(notification) {
+    let url
+
+    if (notification.notificationType == "retweet" || 
+    notification.notificationType == "like" || 
+    notification.notificationType == "reply") {
+        url = `/posts/${notification.entityId}` 
+    } else if (notification.notificationType == "follow") {
+        url = `/profile/${notification.entityId}`  
+    }
+
+    return url
 }
