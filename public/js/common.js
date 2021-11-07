@@ -374,6 +374,18 @@ $(document).on("click", ".followButton", (event) => {
     })
 })
 
+$(document).on("click", ".notification.active", () => {
+    const container = $(e.target);
+    const notification = container.data().id;
+
+    const href = container.attr("href");
+
+    e.preventDefault();
+
+    const callback = () => window.location = href;
+    markNotificationAsOpened(notificationId, callback)
+}) 
+
 function getPostIdFromElement(element) {
     const isRoot = element.hasClass("post");
     const rootElement = isRoot == true ? element : element.closest(".post");
@@ -682,7 +694,7 @@ function markNotificationAsOpened(notificationId = null, callback = null) {
     if (callback == null) callback = () => location.reload();
 
     const url = notificationId != null ? `/api/notifications/${notificationId}/markAsOpened` : `/api/notifications/markAsOpened`
-    $.ajsx({
+    $.ajax({
         url: url,
         type: "PUT",
         success: () => callback()

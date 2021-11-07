@@ -788,3 +788,7 @@ button span {
 .resultListItem.active {
     background-color: var(--blueLight);
 }
+
+.resultListItem.notification * {
+    pointer-events: none;
+}
