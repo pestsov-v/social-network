@@ -4,10 +4,16 @@ const router = express.Router();
 const Notification = require('../../schemas/NotificationSchema')
 
 router.get("/", async (req, res, next) => {
-    Notification.find({ userTo: req.session.user._id, notificationType: { $ne: "newMessage" } })
+    const searchObj = { userTo: req.session.user._id, notificationType: { $ne: "newMessage" } };
+
+    if(req.query.unreadOnly !== undefined && req.query.unreadOnly == "true") {
+        searchObj.opened = false;
+    }
+    
+    Notification.find(searchObj)
     .populate("userTo")
     .populate("userFrom")
-    .sort({ createdAt: - 1})
+    .sort({ createdAt: -1 })
     .then(results => res.status(200).send(results))
     .catch(error => {
         console.log(error);
