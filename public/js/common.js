@@ -693,7 +693,7 @@ function getOtherChatUsers(users) {
 
 function messageReceived(newMessage) {
     if($(".chatContainer").length == 0) {
-
+        showMessagePopup(newMessage)
     } else {
         addChatMessageHtml(newMessage);
     }
@@ -745,9 +745,22 @@ function refreshNotificationsBadge() {
 function showNotificationPopup(data) {
     const html = createNotificationHtml(data);
     const element = $(html);
-    element.prependTo("#notificationList");
+    element.hide().prependTo("#notificationList").slideDown("fast")
 
-    // setTimeout(() => element.fadeOut(400), 5000)
+    setTimeout(() => element.fadeOut(400), 5000)
+}
+
+function showMessagePopup(data) {
+
+    if (!data.chat.latestMessage._id) {
+        data.chat.latestMessage = data
+    }
+
+    const html = createChatHtml(data.chat);
+    const element = $(html);
+    element.hide().prependTo("#notificationList").slideDown("fast")
+
+    setTimeout(() => element.fadeOut(400), 5000)
 }
 
 function outputNotificationList(notifications, container) {
@@ -813,3 +826,50 @@ function getNotificationUrl(notification) {
 
     return url
 }
+
+
+function createChatHtml(chatData) {
+    const chatName = getChatName(chatData);
+    const image = getChatImageElements(chatData);
+    const latestMessage = getLatestMessage(chatData.latestMessage);
+
+    return `<a href='/messages/${chatData._id}' class='resultListItem'>
+                ${image}
+                <div class="resultsDetailsContainer ellipsis">
+                    <span class="heading ellipsis">${chatName}</span>
+                    <span class="subText ellipsis">${latestMessage}</span>
+                </div>
+            </a>`
+}
+
+function getLatestMessage(latestMessage) {
+    if (latestMessage != null) {
+        const sender = latestMessage.sender;
+        return `${sender.firstName} ${sender.lastName}: ${latestMessage.content}`
+    }
+
+    return "Новый чат"
+}
+
+function getChatImageElements(chatData) {
+    const otherChatUsers = getOtherChatUsers(chatData.users);
+
+    let groupChatClass = "";
+    let chatImage = getUserChatElement(otherChatUsers[0]);
+
+    if (otherChatUsers.length > 1) {
+        groupChatClass = "groupChatImage";
+        chatImage += getUserChatElement(otherChatUsers[1]);
+    }
+
+    return `<div class='resultsImageContainer ${groupChatClass}'>${chatImage}</div>`
+}
+
+function getUserChatElement(user) {
+    if (!user || !user.profilePic) {
+        return alert("Ошибочная информация от пользователя")
+    } 
+
+    return `<img src='${user.profilePic}' alt="User's profile pic">`;
+}
+
