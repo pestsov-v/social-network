@@ -692,8 +692,8 @@ function getOtherChatUsers(users) {
 }
 
 function messageReceived(newMessage) {
-    if($(".chatContainer").length == 0) {
-
+    if($(`[data-room="${newMessage.chat._id}"]`).length == 0) {
+        showMessagePopup(newMessage)
     } else {
         addChatMessageHtml(newMessage);
     }
@@ -741,3 +741,137 @@ function refreshNotificationsBadge() {
 
     })
 }
+
+function showNotificationPopup(data) {
+    const html = createNotificationHtml(data);
+    const element = $(html);
+    element.hide().prependTo("#notificationList").slideDown("fast")
+
+    setTimeout(() => element.fadeOut(400), 5000)
+}
+
+function showMessagePopup(data) {
+
+    if (!data.chat.latestMessage._id) {
+        data.chat.latestMessage = data
+    }
+
+    const html = createChatHtml(data.chat);
+    const element = $(html);
+    element.hide().prependTo("#notificationList").slideDown("fast")
+
+    setTimeout(() => element.fadeOut(400), 5000)
+}
+
+function outputNotificationList(notifications, container) {
+    notifications.forEach(notification => {
+        const html = createNotificationHtml(notification)
+        container.append(html)
+    })
+
+    if (notifications.length == 0) {
+        container.append("<span class='NoResults'>У вас нет никаких уведомлений</span>")
+    }
+}
+
+function createNotificationHtml(notification) {
+    const userFrom = notification.userFrom;
+    const text = getNotificationText(notification)
+    const href = getNotificationUrl(notification)
+    const className = notification.opened ? "" : "active"
+
+    return `<a href='${href}' class='resultListItem notification ${className}' data-id='${notification._id}'>
+                <div class='resultsImageContainer'>
+                    <img src='${userFrom.profilePic}'>
+                </div>
+                <div class='resultsDetailsContainer ellipsis'>
+                    <span ckass='ellipsis'>${text}</span>
+                </div>
+            <a/>`
+}
+
+function getNotificationText(notification) {
+
+    const userFrom = notification.userFrom
+    if (!userFrom.firstName || !userFrom.lastName) {
+        return alert("Пользователь не был запопулейтен")
+    }
+
+    const userFromName = `${userFrom.firstName} ${userFrom.lastName}`;
+    let text
+
+    if (notification.notificationType == "retweet") {
+        text = `${userFromName} ретвитнул один из Ваших постов` 
+    } else if (notification.notificationType == "like") {
+        text = `${userFromName} понравился один из Ваших постов` 
+    } else if (notification.notificationType == "reply") {
+        text = `${userFromName} репостнул один из Ваших постов` 
+    } else if (notification.notificationType == "follow") {
+        text = `${userFromName} подписался на Вас` 
+    }
+
+    return `<span class='ellipsis'>${text}</span>`
+}
+
+function getNotificationUrl(notification) {
+    let url
+
+    if (notification.notificationType == "retweet" || 
+    notification.notificationType == "like" || 
+    notification.notificationType == "reply") {
+        url = `/posts/${notification.entityId}` 
+    } else if (notification.notificationType == "follow") {
+        url = `/profile/${notification.entityId}`  
+    }
+
+    return url
+}
+
+
+function createChatHtml(chatData) {
+    const chatName = getChatName(chatData);
+    const image = getChatImageElements(chatData);
+    const latestMessage = getLatestMessage(chatData.latestMessage);
+
+    const activeClass = !chatData.latestMessage || chatData.latestMessage.readBy.includes(userLoggedIn._id) ? "" : "active"
+
+    return `<a href='/messages/${chatData._id}' class='resultListItem ${activeClass}'>
+                ${image}
+                <div class="resultsDetailsContainer ellipsis">
+                    <span class="heading ellipsis">${chatName}</span>
+                    <span class="subText ellipsis">${latestMessage}</span>
+                </div>
+            </a>`
+}
+
+function getLatestMessage(latestMessage) {
+    if (latestMessage != null) {
+        const sender = latestMessage.sender;
+        return `${sender.firstName} ${sender.lastName}: ${latestMessage.content}`
+    }
+
+    return "Новый чат"
+}
+
+function getChatImageElements(chatData) {
+    const otherChatUsers = getOtherChatUsers(chatData.users);
+
+    let groupChatClass = "";
+    let chatImage = getUserChatElement(otherChatUsers[0]);
+
+    if (otherChatUsers.length > 1) {
+        groupChatClass = "groupChatImage";
+        chatImage += getUserChatElement(otherChatUsers[1]);
+    }
+
+    return `<div class='resultsImageContainer ${groupChatClass}'>${chatImage}</div>`
+}
+
+function getUserChatElement(user) {
+    if (!user || !user.profilePic) {
+        return alert("Ошибочная информация от пользователя")
+    } 
+
+    return `<img src='${user.profilePic}' alt="User's profile pic">`;
+}
+
