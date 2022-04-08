@@ -2,26 +2,26 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const middleware = require("./middleware");
+const middleware = require("./src/middleware");
 
-const mongoose = require("./database");
+const mongoose = require("./src/database");
 const config = require("./config");
 
-const loginRoute = require("./routes/loginRoutes");
-const registerRoute = require("./routes/registerRoutes");
-const logoutRoute = require("./routes/logoutRoutes");
-const postRoute = require("./routes/postRoutes");
-const profileRoute = require("./routes/profileRoutes");
-const uploadRoute = require("./routes/uploadRoutes");
-const searchRoute = require("./routes/searchRoutes");
-const messagesRoute = require("./routes/messagesRoutes");
-const notificationsRoute = require("./routes/notificationsRoute");
+const loginRoute = require("./src/routes/loginRoutes");
+const registerRoute = require("./src/routes/registerRoutes");
+const logoutRoute = require("./src/routes/logoutRoutes");
+const postRoute = require("./src/routes/postRoutes");
+const profileRoute = require("./src/routes/profileRoutes");
+const uploadRoute = require("./src/routes/uploadRoutes");
+const searchRoute = require("./src/routes/searchRoutes");
+const messagesRoute = require("./src/routes/messagesRoutes");
+const notificationsRoute = require("./src/routes/notificationsRoute");
 
-const usersApiRoute = require("./routes/api/users");
-const postsApiRoute = require("./routes/api/posts");
-const chatsApiRoute = require("./routes/api/chats");
-const messagesApiRoute = require("./routes/api/messages");
-const notificationsApiRoute = require("./routes/api/notifications");
+const usersApiRoute = require("./src/routes/api/users");
+const postsApiRoute = require("./src/routes/api/posts");
+const chatsApiRoute = require("./src/routes/api/chats");
+const messagesApiRoute = require("./src/routes/api/messages");
+const notificationsApiRoute = require("./src/routes/api/notifications");
 
 const app = express();
 const PORT = 3003;
@@ -31,9 +31,9 @@ const server = app.listen(PORT, serverFunction);
 const io = require("socket.io")(server, { pingTimeout: 60000 });
 
 app.set("view engine", "pug");
-app.set("views", "views");
+app.set("views", "./src/views");
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "./src/public")));
 
 app.use(
   session({

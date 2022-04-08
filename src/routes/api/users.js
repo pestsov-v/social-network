@@ -6,7 +6,7 @@ const User = require("../../schemas/UserSchema");
 const router = express.Router();
 const Notification = require("../../schemas/NotificationSchema");
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "src/uploads/" });
 
 router.get("/", async (req, res, next) => {
   let searchObj = req.query;
