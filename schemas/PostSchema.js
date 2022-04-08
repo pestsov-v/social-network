@@ -1,36 +1,42 @@
-const {Schema, model} = require('mongoose')
+const { Schema, model } = require("mongoose");
 
-const PostSchema = new Schema({
+const PostSchema = new Schema(
+  {
     content: {
-        type: String,
-        trim: true
+      type: String,
+      trim: true,
     },
     postedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     pinned: Boolean,
-    likes: [{
+    likes: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    retweetUsers: [{
+        ref: "User",
+      },
+    ],
+    retweetUsers: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'User'
-    }],
+        ref: "User",
+      },
+    ],
     retweetData: {
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
+      type: Schema.Types.ObjectId,
+      ref: "Post",
     },
     replyTo: {
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
+      type: Schema.Types.ObjectId,
+      ref: "Post",
     },
     pinned: {
-        type: Boolean
-    }
+      type: Boolean,
+    },
+  },
+  { timestamps: true }
+);
 
-}, {timestamps: true})
-
-const Post = model('Post', PostSchema);
+const Post = model("Post", PostSchema);
 module.exports = Post;

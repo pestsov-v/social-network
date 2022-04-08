@@ -4,9 +4,8 @@
   "description": "social-network similar twitter",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev:server": "nodemon app.js"
   },
   "author": "Vladislav Pestsov <vladislav.pestsov@gmail.com>",
   "license": "ISC",

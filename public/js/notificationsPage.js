@@ -1,8 +1,7 @@
 $(document).ready(() => {
-    $.get("/api/notifications", (data) => {
-        outputNotificationList(data, $(".resultsContainer"))
-    })
-})
+  $.get("/api/notifications", (data) => {
+    outputNotificationList(data, $(".resultsContainer"));
+  });
+});
 
-$("#markNotificationsAsRead").click(() => markNotificationAsOpened())
-
+$("#markNotificationsAsRead").click(() => markNotificationAsOpened());
