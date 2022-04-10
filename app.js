@@ -4,8 +4,6 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const middleware = require("./src/middleware");
 
-const config = require("./config");
-
 const loginRoute = require("./src/routes/loginRoutes");
 const registerRoute = require("./src/routes/registerRoutes");
 const logoutRoute = require("./src/routes/logoutRoutes");
@@ -36,7 +34,7 @@ app.use(express.static(path.join(__dirname, "./src/public")));
 
 app.use(
   session({
-    secret: config.secret,
+    secret: process.env.secret,
     resave: true,
     saveUninitialized: false,
   })
