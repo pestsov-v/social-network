@@ -24,6 +24,6 @@ const ChatSchema = new Schema(
   { timestamps: true }
 );
 
-const Chat = models.Chat || model("Chat", ChatSchema);
+const Chat = model("Chat", ChatSchema);
 
 module.exports = Chat;
