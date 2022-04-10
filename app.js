@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const middleware = require("./src/middleware");
 
-const mongoose = require("./src/database");
 const config = require("./config");
 
 const loginRoute = require("./src/routes/loginRoutes");
