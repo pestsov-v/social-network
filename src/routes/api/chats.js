@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const router = express.Router();
-const Chat = require("../../schemas/chatSchema");
+const Chat = require("../../schemas/ChatSchema");
 const User = require("../../schemas/UserSchema");
 const Message = require("../../schemas/MessageSchema");
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const Chat = require("../schemas/chatSchema");
+const Chat = require("../schemas/ChatSchema");
 const User = require("../schemas/UserSchema");
 const mongoose = require("mongoose");
 const router = express.Router();

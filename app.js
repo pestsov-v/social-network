@@ -21,7 +21,7 @@ const messagesApiRoute = require("./src/routes/api/messages");
 const notificationsApiRoute = require("./src/routes/api/notifications");
 
 const app = express();
-const PORT = 3003;
+const PORT = process.env.PORT || 3003;
 const serverFunction = () => console.log(`Server listening on port ${PORT}`);
 
 const server = app.listen(PORT, serverFunction);
