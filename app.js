@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const middleware = require("./src/middleware");
 
+require("dotenv").config();
+
 const loginRoute = require("./src/routes/loginRoutes");
 const registerRoute = require("./src/routes/registerRoutes");
 const logoutRoute = require("./src/routes/logoutRoutes");
@@ -21,7 +23,7 @@ const messagesApiRoute = require("./src/routes/api/messages");
 const notificationsApiRoute = require("./src/routes/api/notifications");
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT;
 const serverFunction = () => console.log(`Server listening on port ${PORT}`);
 
 const server = app.listen(PORT, serverFunction);
