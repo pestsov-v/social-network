@@ -1,0 +1,10 @@
+version: '3'
+services:
+  social_network:
+    image: social_network:latest
+    container_name: social_network
+    restart: always
+    ports: 
+      - 3005:3005
+    volumes:
+      - ./.env:/opt/app/.env
